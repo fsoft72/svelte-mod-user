@@ -38,7 +38,7 @@ import { get, patch, post, delete_ } from '$liwe3/utils/fetcher';
  *
  */
 export const user_admin_add = async ( email: string, password: string, username: string, name?: string, lastname?: string, perms?: string[], enabled?: boolean, language?: string ) => {
-	const res = await post( `/api/user/admin/add`, {
+	const res = await post( `/api/user/admin/add`, { 
 		email,
 		enabled,
 		language,
@@ -47,9 +47,9 @@ export const user_admin_add = async ( email: string, password: string, username:
 		password,
 		perms,
 		username
-	}, true );
+	 }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_admin_add ===*/
 
@@ -72,7 +72,7 @@ export const user_admin_add = async ( email: string, password: string, username:
  *
  */
 export const user_admin_update = async ( id: string, email?: string, password?: string, name?: string, lastname?: string, enabled?: boolean, level?: number, language?: string ) => {
-	const res = await patch( `/api/user/admin/update`, {
+	const res = await patch( `/api/user/admin/update`, { 
 		email,
 		enabled,
 		id,
@@ -81,9 +81,9 @@ export const user_admin_update = async ( id: string, email?: string, password?: 
 		level,
 		name,
 		password
-	}, true );
+	 }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_admin_update ===*/
 
@@ -103,7 +103,7 @@ export const user_admin_update = async ( id: string, email?: string, password?: 
 export const user_admin_del = async ( id_user: string ) => {
 	const res = await delete_( `/api/user/admin/del`, { id_user }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_admin_del ===*/
 
@@ -125,7 +125,7 @@ export const user_admin_del = async ( id_user: string ) => {
 export const user_admin_fields = async ( id: string, data: any ) => {
 	const res = await patch( `/api/user/admin/fields`, { id, data }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_admin_fields ===*/
 
@@ -152,7 +152,7 @@ export const user_admin_fields = async ( id: string, data: any ) => {
  *
  */
 export const user_register = async ( email: string, password: string, recaptcha: string, name?: string, lastname?: string, phone?: string, username?: string, group?: string ) => {
-	const res = await post( `/api/user/register`, {
+	const res = await post( `/api/user/register`, { 
 		email,
 		group,
 		lastname,
@@ -161,9 +161,9 @@ export const user_register = async ( email: string, password: string, recaptcha:
 		phone,
 		recaptcha,
 		username
-	}, false );
+	 }, false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_register ===*/
 
@@ -190,7 +190,7 @@ export const user_register = async ( email: string, password: string, recaptcha:
  *
  */
 export const user_update = async ( email?: string, password?: string, name?: string, lastname?: string, username?: string, group?: string, phone?: string ) => {
-	const res = await patch( `/api/user/update`, {
+	const res = await patch( `/api/user/update`, { 
 		email,
 		group,
 		lastname,
@@ -198,9 +198,9 @@ export const user_update = async ( email?: string, password?: string, name?: str
 		password,
 		phone,
 		username
-	}, true );
+	 }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_update ===*/
 
@@ -221,7 +221,7 @@ export const user_update = async ( email?: string, password?: string, name?: str
 export const user_avatar = async ( avatar: File ) => {
 	const res = await post( `/api/user/avatar`, { avatar }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_avatar ===*/
 
@@ -242,7 +242,7 @@ export const user_avatar = async ( avatar: File ) => {
 export const user_facerec_add = async ( face: File ) => {
 	const res = await post( `/api/user/facerec/add`, { face }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_facerec_add ===*/
 
@@ -265,7 +265,7 @@ export const user_facerec_add = async ( face: File ) => {
 export const user_password_forgot = async ( email: string, recaptcha: string ) => {
 	const res = await post( `/api/user/password-forgot`, { email, recaptcha }, false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_password_forgot ===*/
 
@@ -287,7 +287,7 @@ export const user_password_forgot = async ( email: string, recaptcha: string ) =
 export const user_password_reset = async ( email: string, code: string, password: string ) => {
 	const res = await post( `/api/user/password-reset`, { email, code, password }, false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_password_reset ===*/
 
@@ -307,7 +307,7 @@ export const user_password_reset = async ( email: string, code: string, password
 export const user_register_activate = async ( code: string ) => {
 	const res = await get( `/api/user/register/activate/:code`, { code }, false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_register_activate ===*/
 
@@ -328,7 +328,7 @@ export const user_register_activate = async ( code: string ) => {
 export const user_tag = async ( id_user: string, tags: string[] ) => {
 	const res = await post( `/api/user/tag`, { id_user, tags }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_tag ===*/
 
@@ -350,7 +350,7 @@ export const user_tag = async ( id_user: string, tags: string[] ) => {
 export const user_token = async ( username: string, password: string ) => {
 	const res = await post( `/api/user/token`, { username, password }, false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_token ===*/
 
@@ -375,15 +375,15 @@ export const user_token = async ( username: string, password: string ) => {
  *
  */
 export const user_login = async ( password: string, email?: string, username?: string, recaptcha?: string, challenge?: string ) => {
-	const res = await post( `/api/user/login`, {
+	const res = await post( `/api/user/login`, { 
 		challenge,
 		email,
 		password,
 		recaptcha,
 		username
-	}, false );
+	 }, false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_login ===*/
 
@@ -407,14 +407,14 @@ export const user_login = async ( password: string, email?: string, username?: s
  *
  */
 export const user_login_remote = async ( email: string, name: string, challenge: string, avatar?: string ) => {
-	const res = await post( `/api/user/login/remote`, {
+	const res = await post( `/api/user/login/remote`, { 
 		avatar,
 		challenge,
 		email,
 		name
-	}, false );
+	 }, false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_login_remote ===*/
 
@@ -437,7 +437,7 @@ export const user_login_remote = async ( email: string, name: string, challenge:
 export const user_admin_list = async ( tag?: string ) => {
 	const res = await get( `/api/user/admin/list`, { tag }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_admin_list ===*/
 
@@ -453,10 +453,10 @@ export const user_admin_list = async ( tag?: string ) => {
  * @return ok: boolean
  *
  */
-export const user_logout = async () => {
+export const user_logout = async (  ) => {
 	const res = await get( `/api/user/logout`, {}, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_logout ===*/
 
@@ -472,10 +472,10 @@ export const user_logout = async () => {
  * @return user: User
  *
  */
-export const user_me = async () => {
+export const user_me = async (  ) => {
 	const res = await get( `/api/user/me`, {}, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_me ===*/
 
@@ -498,7 +498,7 @@ export const user_me = async () => {
 export const user_perms_set = async ( id_user: string, perms: UserPerms ) => {
 	const res = await post( `/api/user/perms_set`, { id_user, perms }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_perms_set ===*/
 
@@ -522,7 +522,7 @@ export const user_perms_set = async ( id_user: string, perms: UserPerms ) => {
 export const user_info_add = async ( key: string, data: any ) => {
 	const res = await post( `/api/user/info_add`, { key, data }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_info_add ===*/
 
@@ -542,7 +542,7 @@ export const user_info_add = async ( key: string, data: any ) => {
 export const user_info_del = async ( key: string ) => {
 	const res = await delete_( `/api/user/info_del`, { key }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_info_del ===*/
 
@@ -575,7 +575,7 @@ export const user_info_del = async ( key: string ) => {
  *
  */
 export const user_profile = async ( name?: string, lastname?: string, phone?: string, email?: string, addr_street?: string, addr_nr?: string, addr_zip?: string, addr_city?: string, addr_state?: string, addr_country?: string, facebook?: string, twitter?: string, linkedin?: string, instagram?: string, website?: string ) => {
-	const res = await patch( `/api/user/profile`, {
+	const res = await patch( `/api/user/profile`, { 
 		addr_city,
 		addr_country,
 		addr_nr,
@@ -591,9 +591,9 @@ export const user_profile = async ( name?: string, lastname?: string, phone?: st
 		phone,
 		twitter,
 		website
-	}, true );
+	 }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_profile ===*/
 
@@ -609,10 +609,10 @@ export const user_profile = async ( name?: string, lastname?: string, phone?: st
  * @return user: User
  *
  */
-export const user_test_create = async () => {
+export const user_test_create = async (  ) => {
 	const res = await get( `/api/user/test/create`, {}, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_test_create ===*/
 
@@ -635,7 +635,7 @@ export const user_test_create = async () => {
 export const user_change_password = async ( old_password: string, new_password: string, recaptcha: string ) => {
 	const res = await patch( `/api/user/change/password`, { old_password, new_password, recaptcha }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_change_password ===*/
 
@@ -657,7 +657,7 @@ export const user_change_password = async ( old_password: string, new_password: 
 export const user_set_bio = async ( tagline?: string, bio?: string ) => {
 	const res = await patch( `/api/user/set/bio`, { tagline, bio }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_set_bio ===*/
 
@@ -687,7 +687,7 @@ export const user_set_bio = async ( tagline?: string, bio?: string ) => {
  *
  */
 export const user_set_billing = async ( address?: string, nr?: string, name?: string, city?: string, zip?: string, state?: string, country?: string, company_name?: string, fiscal_code?: string, vat_number?: string, sdi?: string, pec?: string ) => {
-	const res = await patch( `/api/user/set/billing`, {
+	const res = await patch( `/api/user/set/billing`, { 
 		address,
 		city,
 		company_name,
@@ -700,9 +700,9 @@ export const user_set_billing = async ( address?: string, nr?: string, name?: st
 		state,
 		vat_number,
 		zip
-	}, true );
+	 }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_set_billing ===*/
 
@@ -725,7 +725,7 @@ export const user_set_billing = async ( address?: string, nr?: string, name?: st
 export const user_login_metamask = async ( address: string, challenge: string ) => {
 	const res = await post( `/api/user/login/metamask`, { address, challenge }, false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_login_metamask ===*/
 
@@ -748,14 +748,14 @@ export const user_login_metamask = async ( address: string, challenge: string ) 
  *
  */
 export const user_admin_get = async ( id?: string, email?: string, name?: string, lastname?: string ) => {
-	const res = await get( `/api/user/admin/get`, {
+	const res = await get( `/api/user/admin/get`, { 
 		email,
 		id,
 		lastname,
 		name
-	}, true );
+	 }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_admin_get ===*/
 
@@ -771,10 +771,10 @@ export const user_admin_get = async ( id?: string, email?: string, name?: string
  * @return ok: boolean
  *
  */
-export const user_remove_me = async () => {
+export const user_remove_me = async (  ) => {
 	const res = await get( `/api/user/remove/me`, {}, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_remove_me ===*/
 
@@ -794,7 +794,7 @@ export const user_remove_me = async () => {
 export const user_perms_get = async ( id_user: string ) => {
 	const res = await get( `/api/user/perms/get`, { id_user }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_perms_get ===*/
 
@@ -816,7 +816,7 @@ export const user_perms_get = async ( id_user: string ) => {
 export const user_faces_get = async ( id_user?: string ) => {
 	const res = await get( `/api/user/faces/get`, { id_user }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_faces_get ===*/
 
@@ -835,7 +835,7 @@ export const user_faces_get = async ( id_user?: string ) => {
 export const user_upload2face = async ( id_upload: string, id_user?: string ) => {
 	const res = await post( `/api/user/upload2face`, { id_upload, id_user }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_upload2face ===*/
 
@@ -849,10 +849,10 @@ export const user_upload2face = async ( id_upload: string, id_user?: string ) =>
  * @return ok: boolean
  *
  */
-export const user_faces_modules = async () => {
+export const user_faces_modules = async (  ) => {
 	const res = await get( `/api/user/faces/modules`, {}, false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_faces_modules ===*/
 
@@ -875,7 +875,7 @@ export const user_faces_modules = async () => {
 export const user_anonymous = async ( ts: string, challenge: string ) => {
 	const res = await post( `/api/user/anonymous`, { ts, challenge }, false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_anonymous ===*/
 
@@ -902,7 +902,7 @@ export const user_anonymous = async ( ts: string, challenge: string ) => {
  *
  */
 export const user_register_app = async ( email: string, password: string, challenge: string, name?: string, lastname?: string, phone?: string, username?: string, group?: string ) => {
-	const res = await post( `/api/user/register/app`, {
+	const res = await post( `/api/user/register/app`, { 
 		challenge,
 		email,
 		group,
@@ -911,9 +911,9 @@ export const user_register_app = async ( email: string, password: string, challe
 		password,
 		phone,
 		username
-	}, false );
+	 }, false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_register_app ===*/
 
@@ -938,7 +938,7 @@ export const user_register_app = async ( email: string, password: string, challe
 export const user_find = async ( search?: string ) => {
 	const res = await get( `/api/user/find`, { search }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_find ===*/
 
@@ -962,7 +962,7 @@ export const user_find = async ( search?: string ) => {
 export const user_password_forgot_app = async ( username: string, challenge: string ) => {
 	const res = await post( `/api/user/password-forgot/app`, { username, challenge }, false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_password_forgot_app ===*/
 
@@ -985,7 +985,7 @@ export const user_password_forgot_app = async ( username: string, challenge: str
 export const user_del_app = async ( id_user: string, username: string, challenge: string ) => {
 	const res = await post( `/api/user/del/app`, { id_user, username, challenge }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_del_app ===*/
 
@@ -1002,10 +1002,10 @@ export const user_del_app = async ( id_user: string, username: string, challenge
  * @return url: str
  *
  */
-export const user_2fa_start = async () => {
+export const user_2fa_start = async (  ) => {
 	const res = await get( `/api/user/2fa/start`, {}, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_2fa_start ===*/
 
@@ -1027,7 +1027,7 @@ export const user_2fa_start = async () => {
 export const user_login_2fa = async ( id: string, code: string, nonce: string ) => {
 	const res = await post( `/api/user/login/2fa`, { id, code, nonce }, false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_login_2fa ===*/
 
@@ -1048,7 +1048,7 @@ export const user_login_2fa = async ( id: string, code: string, nonce: string ) 
 export const user_2fa_verify = async ( code: string ) => {
 	const res = await post( `/api/user/2fa/verify`, { code }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_2fa_verify ===*/
 
@@ -1069,7 +1069,7 @@ export const user_2fa_verify = async ( code: string ) => {
 export const user_admin_change_password = async ( id_user: string, password: string ) => {
 	const res = await post( `/api/user/admin/change/password`, { id_user, password }, true );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_admin_change_password ===*/
 

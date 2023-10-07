@@ -40,7 +40,8 @@
 			name: `${res.name} ${res.lastname}`,
 			perms: res.perms,
 			email: res.email,
-			token: res.access_token
+			token: res.access_token,
+			username: res.username
 		});
 
 		addToast({

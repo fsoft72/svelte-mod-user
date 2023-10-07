@@ -125,8 +125,10 @@ export interface UserSessionData {
 	id_user?: string;
 	/** The Nonce used for 2FA */
 	nonce?: string;
-	/**  */
+	/** The user group */
 	group?: string;
+	/** The user username */
+	username?: string;
 }
 
 /** UserPerms */

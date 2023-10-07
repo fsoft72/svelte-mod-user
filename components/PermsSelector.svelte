@@ -22,8 +22,6 @@
 
 		const v = perms[module].includes(name);
 
-		console.log('=== has_perm: ', module, ' name: ', name, ' v: ', v, ' perms: ', perms[module]);
-
 		if (!v) return false;
 
 		return true;
