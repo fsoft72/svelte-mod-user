@@ -4,6 +4,7 @@
 	import Modal from '$liwe3/components/Modal.svelte';
 	import FormCreator from '$liwe3/components/FormCreator.svelte';
 	import {
+		user_admin_add,
 		user_admin_change_password,
 		user_admin_del,
 		user_admin_fields,
@@ -20,6 +21,7 @@
 	import { has_perm } from '$liwe3/utils/utils';
 	import { user } from '$modules/user/store';
 	import { _ } from '$liwe3/stores/LocalizationStore';
+	import UserAdminCreate from './UserAdminCreate.svelte';
 
 	export let maxRowsPerPage = 15;
 
@@ -35,62 +37,6 @@
 
 	let filters: Record<string, any> = {};
 	let totRows: number = 0;
-
-	const userEditFields: FormField[] = [
-		{
-			name: 'id',
-			label: 'ID',
-			type: 'hidden',
-			required: true
-		},
-		{
-			name: 'username',
-			label: 'Username',
-			type: 'text',
-			required: true,
-			placeholder: 'Username',
-			size: 'md'
-		},
-		{
-			name: 'email',
-			label: 'Email',
-			type: 'email',
-			required: true,
-			placeholder: 'Email',
-			size: 'md'
-		},
-		{
-			name: 'name',
-			label: 'Name',
-			type: 'text',
-			required: false,
-			placeholder: 'Name',
-			size: 'md'
-		},
-		{
-			name: 'lastname',
-			label: 'Lastname',
-			type: 'text',
-			required: false,
-			placeholder: 'Lastname',
-			size: 'md'
-		},
-		{
-			name: 'group',
-			label: 'group',
-			type: 'text',
-			required: false,
-			placeholder: 'group',
-			size: 'md'
-		},
-		{
-			name: 'enabled',
-			label: 'Enabled',
-			type: 'checkbox',
-			required: false,
-			size: 'md'
-		}
-	];
 
 	const actions: GridAction[] = [];
 
@@ -169,13 +115,29 @@
 	};
 
 	const onEditSubmit = async (data: any) => {
-		const res = await user_admin_fields(data.id, data);
+		let res: any = null;
+		let msg = $_('User created successfully');
+
+		if (data.id) {
+			res = await user_admin_fields(data.id, data);
+			msg = $_('User updated successfully');
+		} else {
+			res = await user_admin_add(
+				data.email,
+				'Th3P455word!',
+				data.username,
+				data.name,
+				data.lastname,
+				undefined,
+				data.enabled
+			);
+		}
 
 		if (res.error) return;
 
 		addToast({
 			type: 'success',
-			message: 'User updated successfully'
+			message: msg
 		});
 	};
 
@@ -238,6 +200,21 @@
 </script>
 
 <div class="content">
+	<div class="buttons">
+		{#if has_perm($user, 'user.create')}
+			<Button
+				mode="mode2"
+				size="sm"
+				href="/user/create"
+				on:click={() => {
+					currentRow = { id: '' };
+					editModalOpen = true;
+				}}
+			>
+				{$_('Create user')}
+			</Button>
+		{/if}
+	</div>
 	<DataGrid
 		data={displayUsers}
 		fields={gridFields}
@@ -277,8 +254,8 @@
 		<div class="delete-user">{currentRow?.email}</div>
 
 		<div slot="footer">
-			<Button mode="danger" on:click={deleteUser}>Delete User</Button>
-			<Button mode="success" on:click={() => (deleteModalOpen = false)}>Cancel</Button>
+			<Button mode="error" on:click={deleteUser}>Delete User</Button>
+			<Button mode="info" on:click={() => (deleteModalOpen = false)}>Cancel</Button>
 		</div>
 	</Modal>
 {/if}
@@ -293,11 +270,7 @@
 			editModalOpen = false;
 		}}
 	>
-		<FormCreator
-			fields={userEditFields}
-			values={currentRow}
-			on:submit={(e) => onEditSubmit(e.detail)}
-		/>
+		<UserAdminCreate user={currentRow} on:user={(e) => onEditSubmit(e.detail)} />
 	</Modal>
 {/if}
 
@@ -379,5 +352,13 @@
 		font-weight: bold;
 		text-align: center;
 		padding: 10px;
+	}
+
+	.buttons {
+		display: flex;
+		justify-content: flex-end;
+		flex-direction: row;
+
+		padding: 1rem 0.5rem;
 	}
 </style>
