@@ -129,7 +129,9 @@
 				data.name,
 				data.lastname,
 				undefined,
-				data.enabled
+				data.enabled,
+				undefined,
+				data.group
 			);
 		}
 
@@ -139,6 +141,8 @@
 			type: 'success',
 			message: msg
 		});
+
+		await refreshUsers();
 	};
 
 	const onPermsUpdated = async (data: any) => {
@@ -189,13 +193,17 @@
 		displayUsers = filteredUsers.slice(0, maxRowsPerPage);
 	}
 
-	onMount(async () => {
+	const refreshUsers = async () => {
 		const res = await user_admin_list();
 
 		if (res.error) return;
 
 		users = res;
 		totRows = users?.length ?? 0;
+	};
+
+	onMount(async () => {
+		await refreshUsers();
 	});
 </script>
 

@@ -33,14 +33,16 @@ import { get, patch, post, delete_ } from '$liwe3/utils/fetcher';
  * @param perms - User permissions [opt]
  * @param enabled - Flag T/F to know if the user is enabled [opt]
  * @param language - The user language [opt]
+ * @param group - The user group [opt]
  *
  * @return user: User
  *
  */
-export const user_admin_add = async ( email: string, password: string, username: string, name?: string, lastname?: string, perms?: string[], enabled?: boolean, language?: string ) => {
+export const user_admin_add = async ( email: string, password: string, username: string, name?: string, lastname?: string, perms?: string[], enabled?: boolean, language?: string, group?: string ) => {
 	const res = await post( `/api/user/admin/add`, { 
 		email,
 		enabled,
+		group,
 		language,
 		lastname,
 		name,
