@@ -1079,3 +1079,23 @@ export const user_admin_change_password = async ( id_user: string, password: str
 
 	return res.ok;
 };
+
+/**
+ * This endpoint allows a user to login to the system as a different user, without using login and password.
+ *
+ * @param id_user - The user ID to login into [req]
+ *
+ * @return __plain__: UserSessionData
+ *
+ */
+export const user_admin_relogin = async ( id_user: string ) => {
+	const res = await post( `/api/user/admin/relogin`, { id_user }, true );
+
+	if (res.error) return res;
+
+	/*=== f2c_start user_admin_relogin ===*/
+
+	/*=== f2c_end user_admin_relogin ===*/
+
+	return res;
+};

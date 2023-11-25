@@ -9,6 +9,7 @@
 		user_admin_del,
 		user_admin_fields,
 		user_admin_list,
+		user_admin_relogin,
 		user_perms_set
 	} from '$modules/user/actions';
 	import type { FormField } from '$liwe3/components/FormCreator.svelte';
@@ -19,9 +20,10 @@
 	import Paginator from '$liwe3/components/Paginator.svelte';
 	import { onMount } from 'svelte';
 	import { has_perm } from '$liwe3/utils/utils';
-	import { user } from '$modules/user/store';
+	import { initUser, user } from '$modules/user/store';
 	import { _ } from '$liwe3/stores/LocalizationStore';
 	import UserAdminCreate from './UserAdminCreate.svelte';
+	import { goto } from '$app/navigation';
 
 	export let maxRowsPerPage = 15;
 
@@ -88,6 +90,18 @@
 			}
 		});
 
+	if (has_perm($user, 'user.change_identity')) {
+		console.log('has_perm', $user, 'user.change_identity');
+		actions.push({
+			id: 'change_identity',
+			label: 'Change identity',
+			icon: 'change_identity',
+			action: (row: any) => {
+				changeIdentity(row.id);
+			}
+		});
+	}
+
 	if (has_perm($user, 'user.create'))
 		actions.push({
 			id: 'delete',
@@ -98,6 +112,28 @@
 				deleteModalOpen = true;
 			}
 		});
+
+	const changeIdentity = async (id: string) => {
+		const res = await user_admin_relogin(id);
+
+		if (res.error) return;
+
+		initUser({
+			uid: res.id || res.id_user,
+			name: `${res.name} ${res.lastname}`,
+			perms: res.perms,
+			email: res.email,
+			token: res.access_token,
+			username: res.username
+		});
+
+		addToast({
+			type: 'success',
+			message: $_('Identity changed successfully')
+		});
+
+		goto('/');
+	};
 
 	const deleteUser = async () => {
 		deleteModalOpen = false;
