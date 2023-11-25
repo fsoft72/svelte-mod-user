@@ -12,7 +12,6 @@
 		user_admin_relogin,
 		user_perms_set
 	} from '$modules/user/actions';
-	import type { FormField } from '$liwe3/components/FormCreator.svelte';
 	import { addToast } from '$liwe3/stores/ToastStore';
 	import PermsSelector from '$modules/user/components/PermsSelector.svelte';
 
@@ -24,6 +23,7 @@
 	import { _ } from '$liwe3/stores/LocalizationStore';
 	import UserAdminCreate from './UserAdminCreate.svelte';
 	import { goto } from '$app/navigation';
+	import { PencilSquare, Trash, ShieldCheck, FingerPrint, Identification } from 'svelte-hero-icons';
 
 	export let maxRowsPerPage = 15;
 
@@ -59,7 +59,8 @@
 		actions.push({
 			id: 'edit',
 			label: 'Edit',
-			icon: 'edit',
+			icon: PencilSquare,
+			mode: 'mode1',
 			action: (row: any) => {
 				currentRow = row;
 				editModalOpen = true;
@@ -72,7 +73,8 @@
 		actions.push({
 			id: 'perms',
 			label: 'Permissions',
-			icon: 'permissions',
+			icon: ShieldCheck,
+			mode: 'mode2',
 			action: (row: any) => {
 				currentRow = row;
 				permsModalOpen = true;
@@ -83,7 +85,8 @@
 		actions.push({
 			id: 'pwd',
 			label: 'Password',
-			icon: 'password',
+			icon: FingerPrint,
+			mode: 'mode3',
 			action: (row: any) => {
 				currentRow = row;
 				passwordModalOpen = true;
@@ -95,7 +98,8 @@
 		actions.push({
 			id: 'change_identity',
 			label: 'Change identity',
-			icon: 'change_identity',
+			icon: Identification,
+			mode: 'mode4',
 			action: (row: any) => {
 				changeIdentity(row.id);
 			}
@@ -106,7 +110,8 @@
 		actions.push({
 			id: 'delete',
 			label: 'Delete',
-			icon: 'delete',
+			icon: Trash,
+			mode: 'error',
 			action: (row: any) => {
 				currentRow = row;
 				deleteModalOpen = true;
