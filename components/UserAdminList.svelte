@@ -248,8 +248,9 @@
 	});
 </script>
 
-<div class="content">
+<div class="container">
 	<div class="buttons">
+		<p class="title">{$_('Users List')}</p>
 		{#if has_perm($user, 'user.create')}
 			<Button
 				mode="mode2"
@@ -394,8 +395,9 @@
 {/if}
 
 <style>
-	.content {
-		margin-bottom: 30em;
+	.container {
+		background-color: var(--liwe3-dark-600);
+		border-radius: var(--liwe-border-radius);
 	}
 	.delete-user {
 		font-weight: bold;
@@ -405,9 +407,10 @@
 
 	.buttons {
 		display: flex;
-		justify-content: flex-end;
-		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0.3rem 1rem;
 
-		padding: 1rem 0.5rem;
+		gap: 1rem;
 	}
 </style>
