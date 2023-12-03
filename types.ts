@@ -187,7 +187,11 @@ export interface UserSmall {
 export interface UserDomain {
 	/** the main id field */
 	id_user: string;
-	/**  */
+	/** The domain ID */
 	id_domain: string;
+	/** The domain name */
+	name: string;
+	/** If T, this is the preferred domain */
+	preferred: boolean;
 }
 

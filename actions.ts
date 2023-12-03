@@ -1120,3 +1120,20 @@ export const user_domain_invitation_accept = async ( invitation: string ) => {
 
 	return res.ok;
 };
+
+/**
+ *
+ * @return domains: UserDomain
+ *
+ */
+export const user_domains_list = async (  ) => {
+	const res = await get( `/api/user/domains/list`, {}, true );
+
+	if (res.error) return res;
+
+	/*=== f2c_start user_domains_list ===*/
+
+	/*=== f2c_end user_domains_list ===*/
+
+	return res.domains;
+};

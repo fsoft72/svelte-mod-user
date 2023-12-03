@@ -8,32 +8,39 @@
 	import biographyFields from '$modules/user/components/subs/profile.biography';
 	import billingFields from '$modules/user/components/subs/profile.billing';
 	import type { User } from '../types';
+	import UserDomainsList from './UserDomainsList.svelte';
+	import type { UserAuth } from '$liwe3/types/user_auth';
+	import { onMount } from 'svelte';
+	import { user_me } from '../actions';
 
-	export let user: User | null = null;
+	export let user: UserAuth | null = null;
 	export let showAccount = true;
 	export let showPassword = true;
 	export let showBio = true;
 	export let showBilling = true;
+	export let showDomains = true;
+
+	let userFull: User | null = {} as User;
 
 	const values = {
-		name: user?.name || '',
-		lastname: user?.lastname || '',
-		phone: user?.phone || '',
-		email: user?.email || '',
+		name: '',
+		lastname: '',
+		phone: '',
+		email: '',
 		address: '',
 		nr: '',
 		zip: '',
 		city: '',
 		state: '',
 		country: '',
-		facebook: user?.facebook || '',
-		twitter: user?.twitter || '',
-		instagram: user?.instagram || '',
-		website: user?.website || '',
-		linkedin: user?.linkedin || '',
+		facebook: '',
+		twitter: '',
+		instagram: '',
+		website: '',
+		linkedin: '',
 		youtube: '',
-		short_bio: user?.tagline || '',
-		bio: user?.bio || '',
+		short_bio: '',
+		bio: '',
 		company_name: '',
 		company_address: '',
 		company_nr: '',
@@ -53,6 +60,26 @@
 	const doSubmit = (e: any) => {
 		console.log('=== SUBMIT: ', values);
 	};
+
+	onMount(async () => {
+		userFull = await user_me();
+
+		if (!userFull) return;
+
+		if ((userFull as any).error) return;
+
+		values.name = userFull.name || '';
+		values.lastname = userFull.lastname || '';
+		values.phone = userFull.phone || '';
+		values.email = userFull.email || '';
+		values.facebook = userFull.facebook || '';
+		values.twitter = userFull.twitter || '';
+		values.instagram = userFull.instagram || '';
+		values.website = userFull.website || '';
+		values.linkedin = userFull.linkedin || '';
+		values.short_bio = userFull.tagline || '';
+		values.bio = userFull.bio || '';
+	});
 </script>
 
 <div class="container">
@@ -103,6 +130,11 @@
 					on:change={showChange}
 					on:submit={doSubmit}
 				/>
+			</Tab>
+		{/if}
+		{#if showDomains}
+			<Tab title="Domains" id="domains">
+				<UserDomainsList user={userFull} />
 			</Tab>
 		{/if}
 	</Tabs>
