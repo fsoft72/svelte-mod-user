@@ -1099,3 +1099,24 @@ export const user_admin_relogin = async ( id_user: string ) => {
 
 	return res;
 };
+
+/**
+ * This endpoint adds a user to a new domain using a special invitation link. The invitation link is unique for each user. 
+ * The user must already have an account in the system.
+ *
+ * @param invitation - The invitation [req]
+ *
+ * @return ok: boolean
+ *
+ */
+export const user_domain_invitation_accept = async ( invitation: string ) => {
+	const res = await get( `/api/user/domain/invitation/accept`, { invitation }, true );
+
+	if (res.error) return res;
+
+	/*=== f2c_start user_domain_invitation_accept ===*/
+
+	/*=== f2c_end user_domain_invitation_accept ===*/
+
+	return res.ok;
+};

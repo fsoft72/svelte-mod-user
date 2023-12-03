@@ -183,3 +183,11 @@ export interface UserSmall {
 	email: string;
 }
 
+/** UserDomain */
+export interface UserDomain {
+	/** the main id field */
+	id_user: string;
+	/**  */
+	id_domain: string;
+}
+
