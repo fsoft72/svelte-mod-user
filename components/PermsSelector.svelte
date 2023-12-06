@@ -47,7 +47,12 @@
 	onMount(async () => {
 		const res = await system_admin_permissions_list();
 
-		permissions = res.permissions;
+		if (res.error) {
+			console.error('Error getting permissions: ', res.error);
+			return;
+		}
+
+		permissions = res;
 	});
 </script>
 
