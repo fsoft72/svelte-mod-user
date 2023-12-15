@@ -11,6 +11,7 @@
 	import { initUser } from '../store';
 
 	export let redirect = '';
+	export let submitLabel = $_('Login');
 
 	let show2FA = false;
 	let code2FA = '';
@@ -98,7 +99,8 @@
 
 <div class="login-form">
 	{#if !show2FA}
-		<FormCreator {fields} showReset={false} on:submit={login} />
+		<FormCreator {fields} showReset={false} on:submit={login} {submitLabel} />
+		<p>{$_('Forgot password?')}</p>
 	{:else}
 		{$_('Insert 2FA code here')}
 		<PinInput bind:value={code2FA} />
