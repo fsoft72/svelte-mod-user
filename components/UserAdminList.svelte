@@ -47,76 +47,93 @@
 			field.editable = true;
 		});
 
-		gridFields.push({
-			name: 'enabled',
-			label: 'Enabled',
-			type: 'checkbox',
-			editable: true,
-			sortable: false,
-			filterable: false
-		});
+		// if enabled is not present, add it
+		if (!gridFields.find((f) => f.name == 'enabled')) {
+			gridFields.push({
+				name: 'enabled',
+				label: 'Enabled',
+				type: 'checkbox',
+				editable: true,
+				sortable: false,
+				filterable: false
+			});
+		}
 
-		actions.push({
-			id: 'edit',
-			label: 'Edit',
-			icon: PencilSquare,
-			mode: 'mode1',
-			action: (row: any) => {
-				currentRow = row;
-				editModalOpen = true;
-				console.log('Edit', row);
-			}
-		});
+		if (!actions.find((a) => a.id == 'edit')) {
+			actions.push({
+				id: 'edit',
+				label: 'Edit',
+				icon: PencilSquare,
+				mode: 'mode1',
+				action: (row: any) => {
+					currentRow = row;
+					editModalOpen = true;
+					console.log('Edit', row);
+				}
+			});
+		}
 	}
 
-	if (has_perm($user, 'user.perms'))
-		actions.push({
-			id: 'perms',
-			label: 'Permissions',
-			icon: ShieldCheck,
-			mode: 'mode2',
-			action: (row: any) => {
-				currentRow = row;
-				permsModalOpen = true;
-			}
-		});
+	if (has_perm($user, 'user.perms')) {
+		if (!actions.find((a) => a.id == 'perms')) {
+			actions.push({
+				id: 'perms',
+				label: 'Permissions',
+				icon: ShieldCheck,
+				mode: 'mode2',
+				action: (row: any) => {
+					currentRow = row;
+					permsModalOpen = true;
+				}
+			});
+		}
+	}
 
-	if (has_perm($user, 'user.password'))
-		actions.push({
-			id: 'pwd',
-			label: 'Password',
-			icon: FingerPrint,
-			mode: 'mode3',
-			action: (row: any) => {
-				currentRow = row;
-				passwordModalOpen = true;
-			}
-		});
+	if (has_perm($user, 'user.password')) {
+		if (!actions.find((a) => a.id == 'pwd')) {
+			actions.push({
+				id: 'pwd',
+				label: 'Password',
+				icon: FingerPrint,
+				mode: 'mode3',
+				action: (row: any) => {
+					currentRow = row;
+					passwordModalOpen = true;
+				}
+			});
+		}
+	}
 
 	if (has_perm($user, 'user.change_identity')) {
-		console.log('has_perm', $user, 'user.change_identity');
-		actions.push({
-			id: 'change_identity',
-			label: 'Change identity',
-			icon: Identification,
-			mode: 'mode4',
-			action: (row: any) => {
-				changeIdentity(row.id);
-			}
-		});
+		// console.log('has_perm', $user, 'user.change_identity');
+
+		if (!actions.find((a) => a.id == 'change_identity')) {
+			actions.push({
+				id: 'change_identity',
+				label: 'Change identity',
+				icon: Identification,
+				mode: 'mode4',
+				action: (row: any) => {
+					changeIdentity(row.id);
+				}
+			});
+		}
 	}
 
-	if (has_perm($user, 'user.create'))
-		actions.push({
-			id: 'delete',
-			label: 'Delete',
-			icon: Trash,
-			mode: 'error',
-			action: (row: any) => {
-				currentRow = row;
-				deleteModalOpen = true;
-			}
-		});
+	if (has_perm($user, 'user.create')) {
+		if (!actions.find((a) => a.id == 'delete')) {
+			actions.push({
+				id: 'delete',
+				label: 'Delete',
+				icon: Trash,
+				mode: 'error',
+				action: (row: any) => {
+					currentRow = row;
+					deleteModalOpen = true;
+				}
+			});
+		}
+	}
 
 	const changeIdentity = async (id: string) => {
 		const res = await user_admin_relogin(id);
