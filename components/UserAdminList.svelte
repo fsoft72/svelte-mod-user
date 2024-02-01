@@ -26,6 +26,7 @@
 	import { PencilSquare, Trash, ShieldCheck, FingerPrint, Identification } from 'svelte-hero-icons';
 
 	export let maxRowsPerPage = 15;
+	export let customActions: GridAction[] = [];
 
 	let users: any[] = [];
 	let filteredUsers: any[] = [];
@@ -40,7 +41,7 @@
 	let filters: Record<string, any> = {};
 	let totRows: number = 0;
 
-	const actions: GridAction[] = [];
+	const actions: GridAction[] = [...customActions];
 
 	if (has_perm($user, 'user.create')) {
 		gridFields.map((field) => {
