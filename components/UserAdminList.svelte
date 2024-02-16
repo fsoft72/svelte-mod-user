@@ -415,7 +415,7 @@
 <style>
 	.container {
 		background-color: var(--liwe3-dark-600);
-		border-radius: var(--liwe-border-radius);
+		border-radius: var(--liwe3-border-radius);
 	}
 	.delete-user {
 		font-weight: bold;

@@ -53,8 +53,8 @@
 	}
 
 	img {
-		border: 1px solid var(--liwe-border-color);
-		border-radius: var(--liwe-border-radius);
+		border: 1px solid var(--liwe3-border-color);
+		border-radius: var(--liwe3-border-radius);
 		padding: 0.5rem;
 		width: 300px;
 		height: 300px;

@@ -89,7 +89,7 @@
 
 <style>
 	.permission-block {
-		background-color: var(--liwe-main-bg-color);
+		background-color: var(--liwe3-main-bg-color);
 		padding: 10px;
 		margin: 0.5rem 0;
 	}
@@ -117,7 +117,7 @@
 	}
 
 	.footer {
-		border-top: 1px solid var(--liwe-lighter-secondary-color);
+		border-top: 1px solid var(--liwe3-lighter-secondary-color);
 		padding-top: 1rem;
 		text-align: right;
 	}
