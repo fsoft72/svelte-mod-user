@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { isTrue } from '$lib/utils/utils';
 	import Button from '$liwe3/components/Button.svelte';
 	import Input from '$liwe3/components/Input.svelte';
+	import { has_perm } from '$liwe3/utils/utils';
 	import { system_admin_permissions_list } from '$modules/system/actions';
 	import { onMount } from 'svelte';
 	import { createEventDispatcher } from 'svelte';
@@ -11,10 +13,12 @@
 		[key: string]: Record<string, string>;
 	}
 
-	export let perms: Record<string, string[]> = {};
+	export let perms: string[] = [];
+
 	let permissions: SystemPerms = {};
 	let form: HTMLFormElement;
 
+	/*
 	const _has_perm = (perm_name: string): boolean => {
 		const [module, name] = perm_name.split('.');
 
@@ -26,19 +30,19 @@
 
 		return true;
 	};
+	*/
 
 	const setPerms = () => {
 		const formData = new FormData(form);
 		const values = Object.fromEntries(formData.entries());
-		const newPerms: Record<string, string[]> = {};
+		const newPerms: string[] = [];
 
 		for (const [k, v] of Object.entries(values)) {
 			const [module, name] = k.split('.');
-			if (!newPerms[module]) newPerms[module] = [];
 
 			console.log('=== k: ', k, ' v: ', v, ' module: ', module, ' name: ', name);
 
-			if (v == 'true') newPerms[module].push(name);
+			if (v == 'on') newPerms.push(`${module}.${name}`);
 		}
 
 		dispatch('update', newPerms);
@@ -71,7 +75,7 @@
 							><Input
 								type="checkbox"
 								name={perm_name}
-								checked={_has_perm(perm_name)}
+								checked={has_perm({ perms }, perm_name)}
 								value="on"
 							/></td
 						>
