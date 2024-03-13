@@ -10,6 +10,7 @@
 		user_admin_fields,
 		user_admin_list,
 		user_admin_relogin,
+		user_domain_set,
 		user_perms_set
 	} from '$modules/user/actions';
 	import { addToast } from '$liwe3/stores/ToastStore';
@@ -194,7 +195,13 @@
 			);
 		}
 
-		console.log('=== RES: ', { res, data });
+		if (res.error) return;
+
+		if (data.domain) {
+			if (has_perm($user, 'system.domain')) {
+				res = await user_domain_set(data.id, data.domain);
+			}
+		}
 
 		if (res.error) return;
 

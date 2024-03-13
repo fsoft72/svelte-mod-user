@@ -85,7 +85,7 @@
 			name: 'domain',
 			label: 'Domain',
 			type: 'select',
-			required: true,
+			required: false,
 			default: 'default',
 			perms: ['system.domain'],
 			options: [

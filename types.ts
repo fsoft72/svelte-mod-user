@@ -101,6 +101,10 @@ export interface User {
 	wallet?: string;
 	/** The user group */
 	group?: string;
+	/** When the user signed the privacy checkbox */
+	privacy?: Date;
+	/** The refresh token */
+	refresh_token?: string;
 }
 
 /** UserSessionData */
@@ -129,6 +133,8 @@ export interface UserSessionData {
 	group?: string;
 	/** The user username */
 	username?: string;
+	/** The refresh token */
+	refresh_token?: string;
 }
 
 /** UserPerms */
