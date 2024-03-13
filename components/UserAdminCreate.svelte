@@ -21,7 +21,8 @@
 			type: 'text',
 			required: true,
 			placeholder: 'Username',
-			size: 'md'
+			size: 'md',
+			col: 6
 		},
 		{
 			name: 'email',
@@ -29,7 +30,8 @@
 			type: 'email',
 			required: true,
 			placeholder: 'Email',
-			size: 'md'
+			size: 'md',
+			col: 6
 		},
 		{
 			name: 'name',
@@ -37,7 +39,8 @@
 			type: 'text',
 			required: false,
 			placeholder: 'Name',
-			size: 'md'
+			size: 'md',
+			col: 6
 		},
 		{
 			name: 'lastname',
@@ -45,7 +48,17 @@
 			type: 'text',
 			required: false,
 			placeholder: 'Lastname',
-			size: 'md'
+			size: 'md',
+			col: 6
+		},
+		{
+			name: 'password',
+			label: 'Password',
+			type: 'password',
+			required: false,
+			placeholder: 'Password',
+			size: 'md',
+			col: 6
 		},
 		{
 			name: 'group',
@@ -53,7 +66,8 @@
 			type: 'text',
 			required: false,
 			placeholder: 'group',
-			size: 'md'
+			size: 'md',
+			col: 6
 		},
 		{
 			name: 'enabled',
@@ -61,6 +75,19 @@
 			type: 'checkbox',
 			required: false,
 			size: 'md'
+		},
+		{
+			name: 'domain',
+			label: 'Domain',
+			type: 'select',
+			required: true,
+			default: 'default',
+			options: [
+				{ value: 'default', label: 'Default' },
+				{ value: 'admin', label: 'Admin' }
+			],
+			size: 'md',
+			col: 6
 		}
 	];
 
