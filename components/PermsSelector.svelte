@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { isTrue } from '$lib/utils/utils';
 	import Button from '$liwe3/components/Button.svelte';
 	import Input from '$liwe3/components/Input.svelte';
 	import { has_perm } from '$liwe3/utils/utils';
@@ -17,20 +18,6 @@
 	let permissions: SystemPerms = {};
 	let form: HTMLFormElement;
 
-	/*
-	const _has_perm = (perm_name: string): boolean => {
-		const [module, name] = perm_name.split('.');
-
-		if (!perms[module]) return false;
-
-		const v = perms[module].includes(name);
-
-		if (!v) return false;
-
-		return true;
-	};
-	*/
-
 	const setPerms = () => {
 		const formData = new FormData(form);
 		const values = Object.fromEntries(formData.entries());
@@ -39,9 +26,7 @@
 		for (const [k, v] of Object.entries(values)) {
 			const [module, name] = k.split('.');
 
-			console.log('=== k: ', k, ' v: ', v, ' module: ', module, ' name: ', name);
-
-			if (v == 'on') newPerms.push(`${module}.${name}`);
+			if (isTrue(v)) newPerms.push(`${module}.${name}`);
 		}
 
 		dispatch('update', newPerms);

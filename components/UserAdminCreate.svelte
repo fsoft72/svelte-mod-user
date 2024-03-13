@@ -1,12 +1,17 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 
 	import type { FormField } from '$liwe3/components/FormCreator.svelte';
 	import FormCreator from '$liwe3/components/FormCreator.svelte';
+	import { system_domains_list } from '$modules/system/actions';
+	import { has_perm } from '$liwe3/utils/utils';
+	import { user } from '../store';
 
-	export let user: any = null;
+	export let targetUser: any = null;
 
 	const dispatch = createEventDispatcher();
+
+	let isReady = false;
 
 	const fields: FormField[] = [
 		{
@@ -95,10 +100,35 @@
 	const onSubmit = (data: any) => {
 		dispatch('user', data);
 	};
+
+	onMount(async () => {
+		const options: { value: string; label: string }[] = [];
+
+		// console.log('=== USER: ', $user);
+		if (has_perm($user, 'system.domain')) {
+			const domains = await system_domains_list();
+			console.log('=== DOMAINS: ', domains);
+
+			// create a value / label pair for each domain
+			domains.forEach((domain: any) => {
+				options.push({
+					value: domain.code,
+					label: domain.name
+				});
+			});
+
+			// add the options to the domain field
+			const domainField = fields.find((f) => f.name === 'domain');
+			if (domainField) domainField.options = options;
+		}
+		isReady = true;
+	});
 </script>
 
 <div class="container">
-	<FormCreator {fields} values={user} on:submit={(e) => onSubmit(e.detail)} />
+	{#if isReady}
+		<FormCreator {fields} values={targetUser} on:submit={(e) => onSubmit(e.detail)} />
+	{/if}
 </div>
 
 <style>

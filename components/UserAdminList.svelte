@@ -194,6 +194,8 @@
 			);
 		}
 
+		console.log('=== RES: ', { res, data });
+
 		if (res.error) return;
 
 		addToast({
@@ -207,6 +209,8 @@
 	const onPermsUpdated = async (data: any) => {
 		// const res = await user_admin_fields(currentRow.id, data);
 		const res = await user_perms_set(currentRow.id, data);
+
+		currentRow.perms = data;
 
 		if (res.error) return;
 
@@ -338,7 +342,7 @@
 			editModalOpen = false;
 		}}
 	>
-		<UserAdminCreate user={currentRow} on:user={(e) => onEditSubmit(e.detail)} />
+		<UserAdminCreate targetUser={currentRow} on:user={(e) => onEditSubmit(e.detail)} />
 	</Modal>
 {/if}
 
