@@ -183,10 +183,10 @@
 		} else {
 			res = await user_admin_add(
 				data.email,
-				'Th3P455word!',
+				data.password || 'Th3P455word!',
 				data.username,
-				data.name,
-				data.lastname,
+				data.name || '',
+				data.lastname || '',
 				undefined,
 				data.enabled,
 				undefined,
