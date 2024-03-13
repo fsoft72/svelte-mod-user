@@ -82,6 +82,7 @@
 			type: 'select',
 			required: true,
 			default: 'default',
+			perms: ['system.domain'],
 			options: [
 				{ value: 'default', label: 'Default' },
 				{ value: 'admin', label: 'Admin' }
