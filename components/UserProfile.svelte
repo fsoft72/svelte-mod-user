@@ -9,11 +9,9 @@
 	import billingFields from '$modules/user/components/subs/profile.billing';
 	import type { User } from '../types';
 	import UserDomainsList from './UserDomainsList.svelte';
-	import type { UserAuth } from '$liwe3/types/user_auth';
 	import { onMount } from 'svelte';
 	import { user_me } from '../actions';
 
-	export let user: UserAuth | null = null;
 	export let showAccount = true;
 	export let showPassword = true;
 	export let showBio = true;
@@ -143,12 +141,5 @@
 <style>
 	.container {
 		max-width: 1200px;
-	}
-
-	.actions {
-		display: flex;
-		justify-content: flex-end;
-
-		margin-top: 2rem;
 	}
 </style>
