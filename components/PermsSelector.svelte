@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { isTrue } from '$lib/utils/utils';
 	import Button from '$liwe3/components/Button.svelte';
 	import Input from '$liwe3/components/Input.svelte';
-	import { has_perm } from '$liwe3/utils/utils';
+	import { has_perm, isTrue } from '$liwe3/utils/utils';
 	import { system_admin_permissions_list } from '$modules/system/actions';
 	import { onMount } from 'svelte';
 	import { createEventDispatcher } from 'svelte';
