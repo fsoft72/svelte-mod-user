@@ -48,25 +48,27 @@
 {:else}
 	<form bind:this={form}>
 		<table class="permission-block">
-			{#each Object.keys(permissions || {}) as mod}
-				<tr>
-					<th colspan="3" class="title">{mod}</th>
-				</tr>
-				{#each Object.keys(permissions[mod]).sort() as perm_name}
+			<tbody>
+				{#each Object.keys(permissions || {}) as mod}
 					<tr>
-						<td class="check"
-							><Input
-								type="checkbox"
-								name={perm_name}
-								checked={has_perm({ perms }, perm_name)}
-								value="on"
-							/></td
-						>
-						<td class="perm-name">{perm_name}</td>
-						<td class="perm-descr">{permissions[mod][perm_name]}</td>
+						<th colspan="3" class="title">{mod}</th>
 					</tr>
+					{#each Object.keys(permissions[mod]).sort() as perm_name}
+						<tr>
+							<td class="check"
+								><Input
+									type="checkbox"
+									name={perm_name}
+									checked={has_perm({ perms }, perm_name)}
+									value="on"
+								/></td
+							>
+							<td class="perm-name">{perm_name}</td>
+							<td class="perm-descr">{permissions[mod][perm_name]}</td>
+						</tr>
+					{/each}
 				{/each}
-			{/each}
+			</tbody>
 		</table>
 	</form>
 	<div class="footer">
