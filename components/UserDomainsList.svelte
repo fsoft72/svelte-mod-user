@@ -7,7 +7,7 @@
 	import Button from '$liwe3/components/Button.svelte';
 	import Modal from '$liwe3/components/Modal.svelte';
 	import { _ } from '$liwe3/stores/LocalizationStore';
-	import { addToast } from '$liwe3/stores/ToastStore';
+	import { addToast } from '$liwe3/stores/ToastStore.svelte';
 
 	export let user: User | null;
 

@@ -13,7 +13,7 @@
 		user_domain_set,
 		user_perms_set
 	} from '$modules/user/actions';
-	import { addToast } from '$liwe3/stores/ToastStore';
+	import { addToast } from '$liwe3/stores/ToastStore.svelte';
 	import PermsSelector from '$modules/user/components/PermsSelector.svelte';
 
 	import gridFields from './subs/user.fields';

@@ -3,7 +3,7 @@
 	import { user_2fa_start, user_2fa_verify, user_init } from '../actions';
 	import PinInput from '$liwe3/components/PINInput.svelte';
 	import Button from '$liwe3/components/Button.svelte';
-	import { addToast } from '$liwe3/stores/ToastStore';
+	import { addToast } from '$liwe3/stores/ToastStore.svelte';
 
 	let url = '';
 	let error = '';

@@ -5,7 +5,7 @@
 	import type { FormField } from '$liwe3/components/FormCreator.svelte';
 	import PinInput from '$liwe3/components/PINInput.svelte';
 	import { _ } from '$liwe3/stores/LocalizationStore';
-	import { addToast } from '$liwe3/stores/ToastStore';
+	import { addToast } from '$liwe3/stores/ToastStore.svelte';
 	import { user_login, user_login_2fa } from '$modules/user/actions';
 	import { UserCircle } from 'svelte-hero-icons';
 	import { initUser } from '../store';
