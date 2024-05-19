@@ -55,8 +55,8 @@
 		}
 	};
 
-	const login = async (e: CustomEvent) => {
-		const { username, password } = e.detail;
+	const login = async (values: Record<string, string>) => {
+		const { username, password } = values;
 		const res = await user_login(password, username, undefined, undefined, 'testme');
 
 		if (res.error) {
@@ -99,7 +99,7 @@
 
 <div class="login-form">
 	{#if !show2FA}
-		<FormCreator {fields} showReset={false} on:submit={login} {submitLabel} />
+		<FormCreator {fields} showReset={false} onsubmit={login} {submitLabel} />
 		<p>{$_('Forgot password?')}</p>
 	{:else}
 		{$_('Insert 2FA code here')}

@@ -19,7 +19,7 @@
 <div class="avatar">
 	{#if user}
 		<!-- svelte-ignore a11y-no-static-element-interactions -->
-		<div class="avatar-container" on:click={toggleDropdown} on:keyup={toggleDropdown}>
+		<div class="avatar-container" onclick={toggleDropdown} onkeyup={toggleDropdown}>
 			{#if user}
 				{#if user.avatar}
 					<img src={user.avatar} alt={user.name} />
@@ -37,7 +37,7 @@
 						<!-- svelte-ignore a11y-click-events-have-key-events -->
 						<!-- svelte-ignore a11y-no-static-element-interactions -->
 						<a
-							on:click={() => {
+							onclick={() => {
 								showDropdown = false;
 								user_logout();
 								clearUser();
@@ -50,7 +50,7 @@
 			</div>
 		{/if}
 	{:else}
-		<Button size="sm" on:click={() => goto('/auth/login')}>Login</Button>
+		<Button size="sm" onclick={() => goto('/auth/login')}>Login</Button>
 	{/if}
 </div>
 
