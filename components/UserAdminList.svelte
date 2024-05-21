@@ -238,11 +238,9 @@
 
 			for (const field in filters) {
 				const filter = filters[field];
-				if (filter.mode == '==') {
-					if (filter) {
-						if (!user[field] || user[field].indexOf(filter.value) == -1) {
-							add = false;
-						}
+				if (filter) {
+					if (!user[field] || user[field].indexOf(filter.value) == -1) {
+						add = false;
 					}
 				}
 			}
@@ -298,7 +296,8 @@
 		data={displayUsers}
 		fields={gridFields}
 		{actions}
-		onupdatefield={async (row, field_name) => {
+		on:updatefield={async (e) => {
+			const { row, field_name } = e.detail;
 			console.log('updateField', row, field_name);
 			const res = await user_admin_fields(row.id, { [field_name]: row[field_name] });
 
