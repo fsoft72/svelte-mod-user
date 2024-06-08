@@ -8,13 +8,17 @@
 	import { addToast } from '$liwe3/stores/ToastStore.svelte';
 	import { user_login, user_login_2fa } from '$modules/user/actions';
 	import { UserCircle } from 'svelte-hero-icons';
-	import { initUser } from '../store';
+	import { userStoreUpdate } from '../store';
 
-	export let redirect = '';
-	export let submitLabel = $_('Login');
+	interface LoginProps {
+		redirect?: string;
+		submitLabel?: string;
+	}
 
-	let show2FA = false;
-	let code2FA = '';
+	let { redirect = '', submitLabel = $_('Login') }: LoginProps = $props();
+
+	let show2FA = $state(false);
+	let code2FA = $state('');
 	let nonce = '';
 	let id_user = '';
 
@@ -36,7 +40,8 @@
 
 	const _do_login = (res: any) => {
 		console.log('=== DO LOGIN: ', res);
-		initUser({
+
+		userStoreUpdate({
 			uid: res.id || res.id_user,
 			name: `${res.name} ${res.lastname}`,
 			perms: res.perms,

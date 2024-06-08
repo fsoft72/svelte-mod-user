@@ -3,15 +3,19 @@
 	import { _ } from '$liwe3/stores/LocalizationStore';
 	import type { Color, Variant } from '$liwe3/types/types';
 	import { user_logout } from '../actions';
-	import { clearUser } from '../store';
+	import { userStoreClear } from '../store';
 
-	export let redir: string = '/';
-	export let mode: Color = 'error';
-	export let variant: Variant = 'solid';
+	interface LogoutProps {
+		redir?: string;
+		mode?: Color;
+		variant?: Variant;
+	}
+
+	let { redir = '/', mode = 'error', variant = 'solid' }: LogoutProps = $props();
 
 	const doLogout = async () => {
 		await user_logout();
-		clearUser();
+		userStoreClear();
 		localStorage.removeItem('token');
 		window.location.href = redir;
 	};

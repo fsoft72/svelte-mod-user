@@ -1,24 +1,29 @@
 <script lang="ts">
 	import Button from '$liwe3/components/Button.svelte';
 	import Input from '$liwe3/components/Input.svelte';
-	import { has_perm, isTrue } from '$liwe3/utils/utils';
+	import { type UserAuth } from '$liwe3/types/user_auth';
+	import { has_perm, isTrue, keys } from '$liwe3/utils/utils';
 	import { system_admin_permissions_list } from '$modules/system/actions';
 	import { onMount } from 'svelte';
-	import { createEventDispatcher } from 'svelte';
-
-	const dispatch = createEventDispatcher();
 
 	interface SystemPerms {
 		[key: string]: Record<string, string>;
 	}
 
-	export let perms: string[] = [];
+	interface PermsSelectorProps {
+		perms: string[];
 
-	let permissions: SystemPerms = {};
-	let form: HTMLFormElement;
+		// events
+		onupdate: (perms: string[]) => void;
+	}
+
+	let { perms = [], onupdate }: PermsSelectorProps = $props();
+
+	let permissions: SystemPerms = $state({});
+	let form: HTMLFormElement | null = $state(null);
 
 	const setPerms = () => {
-		const formData = new FormData(form);
+		const formData = new FormData(form!);
 		const values = Object.fromEntries(formData.entries());
 		const newPerms: string[] = [];
 
@@ -28,7 +33,7 @@
 			if (isTrue(v)) newPerms.push(`${module}.${name}`);
 		}
 
-		dispatch('update', newPerms);
+		onupdate(newPerms);
 	};
 
 	onMount(async () => {
@@ -43,7 +48,7 @@
 	});
 </script>
 
-{#if Object.keys(permissions || {}).length === 0}
+{#if keys(permissions || {}).length === 0}
 	<div>No permissions found</div>
 {:else}
 	<form bind:this={form}>
@@ -59,7 +64,7 @@
 								><Input
 									type="checkbox"
 									name={perm_name}
-									checked={has_perm({ perms }, perm_name)}
+									checked={has_perm({ perms } as UserAuth,  perm_name)}
 									value="on"
 								/></td
 							>

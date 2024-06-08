@@ -7,11 +7,16 @@
 	import { has_perm } from '$liwe3/utils/utils';
 	import { userStore } from '../store';
 
-	export let targetUser: any = null;
+	interface UserAdminCreateProps {
+		targetUser: any;
 
-	const dispatch = createEventDispatcher();
+		// events
+		onuser: (user: any) => void;
+	}
 
-	let isReady = false;
+	let { targetUser, onuser }: UserAdminCreateProps = $props();
+
+	let isReady = $state(false);
 
 	const fields: FormField[] = [
 		{
@@ -98,14 +103,14 @@
 	];
 
 	const onSubmit = (data: any) => {
-		dispatch('user', data);
+		onuser(data);
 	};
 
 	onMount(async () => {
 		const options: { value: string; label: string }[] = [];
 
 		// console.log('=== USER: ', $user);
-		if (has_perm($userStore, 'system.domain')) {
+		if (has_perm(userStore, 'system.domain')) {
 			const domains = await system_domains_list();
 			console.log('=== DOMAINS: ', domains);
 

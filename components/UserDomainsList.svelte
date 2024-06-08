@@ -9,12 +9,16 @@
 	import { _ } from '$liwe3/stores/LocalizationStore';
 	import { addToast } from '$liwe3/stores/ToastStore.svelte';
 
-	export let user: User | null;
+	interface UserDomainsListProps {
+		user: User;
+	}
 
-	let is_ready = false;
-	let domains: GridDataRow[] = [];
-	let showDomainDialog = false;
-	let inv = '';
+	let { user }: UserDomainsListProps = $props();
+
+	let is_ready = $state(false);
+	let domains: GridDataRow[] = $state([]);
+	let showDomainDialog = $state(false);
+	let inv = $state('');
 
 	const fields: GridField[] = [
 		{
@@ -94,7 +98,7 @@
 		<div class="inv">
 			{$_('Paste your domain invitation here:')}
 
-			<textarea class="textarea" placeholder="Textarea" rows="5" bind:value={inv} />
+			<textarea class="textarea" placeholder="Textarea" rows="5" bind:value={inv}></textarea>
 
 			<Button size="sm" mode="mode2" on:click={addDomain}>{$_('Add Domain')}</Button>
 		</div>

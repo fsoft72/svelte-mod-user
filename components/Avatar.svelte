@@ -3,12 +3,16 @@
 	import Button from '$liwe3/components/Button.svelte';
 	import type { UserAuth } from '$liwe3/types/user_auth';
 	import { user_logout } from '$modules/user/actions';
-	import { clearUser } from '../store';
+	import { userStoreClear } from '../store';
 
-	export let user: UserAuth | null = null;
-	export let logoutURL: string = '/';
+	interface AvatarProps {
+		user?: UserAuth | null;
+		logoutURL?: string;
+	}
 
-	let showDropdown = false;
+	let { user, logoutURL = '/' }: AvatarProps = $props();
+
+	let showDropdown = $state(false);
 
 	function toggleDropdown() {
 		showDropdown = !showDropdown;
@@ -18,7 +22,7 @@
 
 <div class="avatar">
 	{#if user}
-		<!-- svelte-ignore a11y-no-static-element-interactions -->
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div class="avatar-container" onclick={toggleDropdown} onkeyup={toggleDropdown}>
 			{#if user}
 				{#if user.avatar}
@@ -33,14 +37,14 @@
 				<ul>
 					<li><a href="/user/profile">Profile</a></li>
 					<li>
-						<!-- svelte-ignore a11y-missing-attribute -->
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<!-- svelte-ignore a11y-no-static-element-interactions -->
+						<!-- svelte-ignore a11y_click_events_have_key_events -->
+						<!-- svelte-ignore a11y_no_static_element_interactions -->
+						<!-- svelte-ignore a11y_missing_attribute -->
 						<a
 							onclick={() => {
 								showDropdown = false;
 								user_logout();
-								clearUser();
+								userStoreClear();
 								goto(logoutURL);
 							}}
 							>Logout
