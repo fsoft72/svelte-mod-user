@@ -3,11 +3,11 @@ import type { UserAuth } from '$liwe3/types/user_auth';
 import { writable } from 'svelte/store';
 
 // create a writable store for the LiWEUser
-export const user = writable<UserAuth | null>( null );
+export const userStore = writable<UserAuth | null>( null );
 
 // set data to the user store
 export const setUser = ( data: UserAuth | null ) => {
-	user.set( data );
+	userStore.set( data );
 
 	// save the user data to the localStorage
 	if ( data && browser ) {
@@ -34,7 +34,7 @@ export const initUser = ( data: Record<string, any> ) => {
 };
 
 export const clearUser = () => {
-	user.set( null );
+	userStore.set( null );
 
 	// clear the localStorage
 	localStorage.removeItem( 'user' );
@@ -46,6 +46,6 @@ export const clearUser = () => {
 export let currentUser: UserAuth | null = null;
 
 // subscribe to the user store
-user.subscribe( ( value ) => {
+userStore.subscribe( ( value ) => {
 	currentUser = value;
 } );
