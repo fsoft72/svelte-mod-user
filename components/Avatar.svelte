@@ -3,7 +3,7 @@
 	import Button from '$liwe3/components/Button.svelte';
 	import type { UserAuth } from '$liwe3/types/user_auth';
 	import { user_logout } from '$modules/user/actions';
-	import { userStoreClear } from '../store';
+	import { userStoreClear } from '../store.svelte';
 
 	interface AvatarProps {
 		user?: UserAuth | null;

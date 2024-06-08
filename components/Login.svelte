@@ -8,7 +8,7 @@
 	import { addToast } from '$liwe3/stores/ToastStore.svelte';
 	import { user_login, user_login_2fa } from '$modules/user/actions';
 	import { UserCircle } from 'svelte-hero-icons';
-	import { userStoreUpdate } from '../store';
+	import { userStoreUpdate } from '../store.svelte';
 
 	interface LoginProps {
 		redirect?: string;

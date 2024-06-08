@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 /*=== f2c_start __file ===*/
-import { userStoreClear, userStoreUpdate } from './store';
+import { userStoreClear, userStoreUpdate } from './store.svelte';
 import type { UserPerms } from './types';
 import { browser } from '$app/environment';
 

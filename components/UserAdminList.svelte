@@ -20,7 +20,7 @@
 	import Paginator from '$liwe3/components/Paginator.svelte';
 	import { onMount } from 'svelte';
 	import { has_perm } from '$liwe3/utils/utils';
-	import { userStore, userStoreUpdate } from '$modules/user/store';
+	import { userStore, userStoreUpdate } from '$modules/user/store.svelte';
 	import { _ } from '$liwe3/stores/LocalizationStore';
 	import UserAdminCreate from './UserAdminCreate.svelte';
 	import { goto } from '$app/navigation';

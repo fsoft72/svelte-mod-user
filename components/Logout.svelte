@@ -3,7 +3,7 @@
 	import { _ } from '$liwe3/stores/LocalizationStore';
 	import type { Color, Variant } from '$liwe3/types/types';
 	import { user_logout } from '../actions';
-	import { userStoreClear } from '../store';
+	import { userStoreClear } from '../store.svelte';
 
 	interface LogoutProps {
 		redir?: string;
