@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 /*=== f2c_start __file ===*/
-import { userStoreClear, userStoreUpdate } from './store.svelte';
+import { userStore, userStoreClear, userStoreUpdate } from './store.svelte';
 import type { UserPerms } from './types';
 import { browser } from '$app/environment';
 
@@ -26,7 +26,10 @@ export const user_init = async ( data: string = '' ) => {
 
 	const res = await user_me();
 
-	if ( res.error ) userStoreClear();
+	if ( res.error ) {
+		console.error( "=== user_init: credentials were invalid. Logging out the user." );
+		userStoreClear();
+	}
 };
 /*=== f2c_end __file ===*/
 
@@ -387,6 +390,8 @@ export const user_token = async ( username: string, password: string ) => {
  *
  */
 export const user_login = async ( password: string, email?: string, username?: string, recaptcha?: string, challenge?: string ) => {
+	userStoreClear();
+
 	const res = await post( `/api/user/login`, {
 		challenge,
 		email,
