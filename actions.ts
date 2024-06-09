@@ -18,7 +18,9 @@ export const user_init_server = async ( data: string = '', cookies: any = null )
 	userStoreUpdate( JSON.parse( data ) );
 };
 
-export const user_init = async ( data: string = '' ) => {
+export const user_init = async ( data: string = '', force = false ) => {
+	if ( !force && userStore.id ) return;
+
 	if ( !data && browser ) data = await localStorage.getItem( 'user' ) ?? '';
 	if ( !data ) return;
 
