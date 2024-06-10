@@ -5,7 +5,7 @@
 	import FormCreator from '$liwe3/components/FormCreator.svelte';
 	import { system_domains_list } from '$modules/system/actions';
 	import { has_perm } from '$liwe3/utils/utils';
-	import { userStore } from '../store.svelte';
+	import { storeUser } from '../store.svelte';
 
 	interface UserAdminCreateProps {
 		targetUser: any;
@@ -110,7 +110,7 @@
 		const options: { value: string; label: string }[] = [];
 
 		// console.log('=== USER: ', $user);
-		if (has_perm(userStore, 'system.domain')) {
+		if (has_perm(storeUser, 'system.domain')) {
 			const domains = await system_domains_list();
 			console.log('=== DOMAINS: ', domains);
 

@@ -3,7 +3,7 @@ import type { UserAuth } from '$liwe3/types/user_auth';
 import { clearObject } from '$liwe3/utils/utils';
 
 // create a writable store for the LiWEUser
-export const userStore: UserAuth = $state(
+export const storeUser: UserAuth = $state(
 	{
 		uid: '',
 		name: '',
@@ -17,21 +17,21 @@ export const userStore: UserAuth = $state(
 
 // set data to the user store
 export const userStoreUpdate = ( data: UserAuth | null ) => {
-	Object.assign( userStore, data );
+	Object.assign( storeUser, data );
 
 	// save the user data to the localStorage
 	if ( data && browser ) {
 		// convert data to Base64
-		localStorage.setItem( 'user', JSON.stringify( userStore ) );
+		localStorage.setItem( 'user', JSON.stringify( storeUser ) );
 
 		// set a cookie with the data
-		const base64 = btoa( JSON.stringify( userStore ) );
+		const base64 = btoa( JSON.stringify( storeUser ) );
 		document.cookie = `user=${ base64 }; path=/`;
 	}
 };
 
 export const userStoreClear = () => {
-	clearObject( userStore );
+	clearObject( storeUser );
 
 	// clear the localStorage
 	localStorage.removeItem( 'user' );

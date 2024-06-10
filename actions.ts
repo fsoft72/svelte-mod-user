@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 /*=== f2c_start __file ===*/
-import { userStore, userStoreClear, userStoreUpdate } from './store.svelte';
+import { storeUser, userStoreClear, userStoreUpdate } from './store.svelte';
 import type { UserPerms } from './types';
 import { browser } from '$app/environment';
 
@@ -19,7 +19,7 @@ export const user_init_server = async ( data: string = '', cookies: any = null )
 };
 
 export const user_init = async ( data: string = '', force = false ) => {
-	if ( !force && userStore.id ) return;
+	if ( !force && storeUser.uid ) return;
 
 	if ( !data && browser ) data = await localStorage.getItem( 'user' ) ?? '';
 	if ( !data ) return;

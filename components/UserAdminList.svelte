@@ -20,7 +20,7 @@
 	import Paginator from '$liwe3/components/Paginator.svelte';
 	import { onMount } from 'svelte';
 	import { has_perm } from '$liwe3/utils/utils';
-	import { userStore, userStoreUpdate } from '$modules/user/store.svelte';
+	import { storeUser, userStoreUpdate } from '$modules/user/store.svelte';
 	import { _ } from '$liwe3/stores/LocalizationStore';
 	import UserAdminCreate from './UserAdminCreate.svelte';
 	import { goto } from '$app/navigation';
@@ -44,7 +44,7 @@
 
 	const actions: GridAction[] = [...customActions];
 
-	if (has_perm(userStore, 'user.create')) {
+	if (has_perm(storeUser, 'user.create')) {
 		gridFields.map((field) => {
 			field.editable = true;
 		});
@@ -76,7 +76,7 @@
 		}
 	}
 
-	if (has_perm(userStore, 'user.perms')) {
+	if (has_perm(storeUser, 'user.perms')) {
 		if (!actions.find((a) => a.id == 'perms')) {
 			actions.push({
 				id: 'perms',
@@ -91,7 +91,7 @@
 		}
 	}
 
-	if (has_perm(userStore, 'user.password')) {
+	if (has_perm(storeUser, 'user.password')) {
 		if (!actions.find((a) => a.id == 'pwd')) {
 			actions.push({
 				id: 'pwd',
@@ -106,7 +106,7 @@
 		}
 	}
 
-	if (has_perm(userStore, 'user.change_identity')) {
+	if (has_perm(storeUser, 'user.change_identity')) {
 		// console.log('has_perm', $user, 'user.change_identity');
 
 		if (!actions.find((a) => a.id == 'change_identity')) {
@@ -122,7 +122,7 @@
 		}
 	}
 
-	if (has_perm(userStore, 'user.create')) {
+	if (has_perm(storeUser, 'user.create')) {
 		if (!actions.find((a) => a.id == 'delete')) {
 			actions.push({
 				id: 'delete',
@@ -198,7 +198,7 @@
 		if (res.error) return;
 
 		if (data.domain) {
-			if (has_perm(userStore, 'system.domain')) {
+			if (has_perm(storeUser, 'system.domain')) {
 				res = await user_domain_set(data.id, data.domain);
 			}
 		}
@@ -280,7 +280,7 @@
 <div class="container">
 	<div class="buttons">
 		<p class="title">{$_('Users List')}</p>
-		{#if has_perm(userStore, 'user.create')}
+		{#if has_perm(storeUser, 'user.create')}
 			<Button
 				mode="mode2"
 				size="sm"
@@ -349,7 +349,7 @@
 			editModalOpen = false;
 		}}
 	>
-		<UserAdminCreate targetUser={currentRow} on:user={(e) => onEditSubmit(e.detail)} />
+		<UserAdminCreate targetUser={currentRow} onuser={(e) => onEditSubmit(e.detail)} />
 	</Modal>
 {/if}
 
@@ -363,7 +363,7 @@
 			permsModalOpen = false;
 		}}
 	>
-		<PermsSelector perms={currentRow?.perms || {}} on:update={(e) => onPermsUpdated(e.detail)} />
+		<PermsSelector perms={currentRow?.perms || {}} onupdate={(perms) => onPermsUpdated(perms)} />
 	</Modal>
 {/if}
 
