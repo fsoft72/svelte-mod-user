@@ -309,11 +309,8 @@
 	<Paginator
 		total={totRows}
 		rows={maxRowsPerPage}
-		on:pagechange={(e) => {
-			displayUsers = filteredUsers.slice(
-				(e.detail.page - 1) * maxRowsPerPage,
-				e.detail.page * maxRowsPerPage
-			);
+		onpagechange={(page, rows) => {
+			displayUsers = filteredUsers.slice((page - 1) * maxRowsPerPage, page * maxRowsPerPage);
 		}}
 	/>
 </div>
@@ -332,10 +329,12 @@
 		Please confirm you want to delete user<br />
 		<div class="delete-user">{currentRow?.email}</div>
 
+		<!--
 		<div slot="footer">
 			<Button mode="error" on:click={deleteUser}>Delete User</Button>
 			<Button mode="info" on:click={() => (deleteModalOpen = false)}>Cancel</Button>
 		</div>
+	-->
 	</Modal>
 {/if}
 
