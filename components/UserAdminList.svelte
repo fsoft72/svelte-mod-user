@@ -227,8 +227,7 @@
 		});
 	};
 
-	const onFilterChange = (e: CustomEvent) => {
-		filters = e.detail;
+	const onFilterChange = (filters: Record<string, any>) => {
 		console.log('onFilterChange', filters);
 
 		const u: any[] = [];
@@ -285,7 +284,7 @@
 				mode="mode2"
 				size="sm"
 				href="/user/create"
-				on:click={() => {
+				onclick={() => {
 					currentRow = { id: '' };
 					editModalOpen = true;
 				}}
@@ -304,7 +303,7 @@
 
 			if (res.error) return;
 		}}
-		on:filterchange={onFilterChange}
+		onfilterchange={onFilterChange}
 	/>
 	<Paginator
 		total={totRows}
@@ -318,11 +317,10 @@
 {#if deleteModalOpen}
 	<Modal
 		title="Delete user"
-		on:confirm={() => {
-			users = users.filter((r) => r.id !== currentRow.id);
+		onclose={() => {
 			deleteModalOpen = false;
 		}}
-		on:cancel={() => {
+		oncancel={() => {
 			deleteModalOpen = false;
 		}}
 	>
@@ -341,10 +339,10 @@
 {#if editModalOpen}
 	<Modal
 		title="Edit user"
-		on:confirm={() => {
+		onclose={() => {
 			editModalOpen = false;
 		}}
-		on:cancel={() => {
+		oncancel={() => {
 			editModalOpen = false;
 		}}
 	>
@@ -355,10 +353,10 @@
 {#if permsModalOpen}
 	<Modal
 		title="User Permissions"
-		on:confirm={() => {
+		onclose={() => {
 			permsModalOpen = false;
 		}}
-		on:cancel={() => {
+		oncancel={() => {
 			permsModalOpen = false;
 		}}
 	>
@@ -369,10 +367,10 @@
 {#if passwordModalOpen}
 	<Modal
 		title={$_('Change password')}
-		on:confirm={() => {
+		onclose={() => {
 			passwordModalOpen = false;
 		}}
-		on:cancel={() => {
+		oncancel={() => {
 			passwordModalOpen = false;
 		}}
 	>
@@ -395,8 +393,8 @@
 					size: 'md'
 				}
 			]}
-			on:submit={async (e) => {
-				const { password, password_confirm } = e.detail;
+			onsubmit={async (data: Record<string, any>) => {
+				const { password, password_confirm } = data;
 
 				if (password != password_confirm) {
 					addToast({
