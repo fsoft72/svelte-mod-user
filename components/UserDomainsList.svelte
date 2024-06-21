@@ -77,7 +77,7 @@
 {#if user?.id && is_ready}
 	<div class="container">
 		<div class="buttons">
-			<Button size="sm" mode="mode2" on:click={() => (showDomainDialog = true)}>Add Domain</Button>
+			<Button size="sm" mode="mode2" onclick={() => (showDomainDialog = true)}>Add Domain</Button>
 		</div>
 		<DataGrid {fields} data={domains} />
 	</div>
@@ -88,10 +88,10 @@
 {#if showDomainDialog}
 	<Modal
 		title="Add Domain"
-		on:close={() => {
+		onclose={() => {
 			showDomainDialog = false;
 		}}
-		on:cancel={() => {
+		oncancel={() => {
 			showDomainDialog = false;
 		}}
 	>
@@ -100,7 +100,7 @@
 
 			<textarea class="textarea" placeholder="Textarea" rows="5" bind:value={inv}></textarea>
 
-			<Button size="sm" mode="mode2" on:click={addDomain}>{$_('Add Domain')}</Button>
+			<Button size="sm" mode="mode2" onclick={addDomain}>{$_('Add Domain')}</Button>
 		</div>
 	</Modal>
 {/if}

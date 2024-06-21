@@ -109,7 +109,7 @@
 	{:else}
 		{$_('Insert 2FA code here')}
 		<PinInput bind:value={code2FA} />
-		<Button on:click={login2FA}>{$_('Submit')}</Button>
+		<Button onclick={login2FA}>{$_('Submit')}</Button>
 	{/if}
 </div>
 

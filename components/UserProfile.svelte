@@ -99,8 +99,8 @@
 					{values}
 					submitLabel="Update"
 					showReset={false}
-					on:change={showChange}
-					on:submit={doSubmit}
+					onchange={showChange}
+					onsubmit={doSubmit}
 				/>
 			</Tab>
 		{/if}
@@ -111,8 +111,8 @@
 					{values}
 					submitLabel="Update"
 					showReset={false}
-					on:change={showChange}
-					on:submit={doSubmit}
+					onchange={showChange}
+					onsubmit={doSubmit}
 				/>
 			</Tab>
 		{/if}
@@ -123,8 +123,8 @@
 					{values}
 					submitLabel="Update"
 					showReset={false}
-					on:change={showChange}
-					on:submit={doSubmit}
+					onchange={showChange}
+					onsubmit={doSubmit}
 				/>
 			</Tab>
 		{/if}
@@ -135,8 +135,8 @@
 					{values}
 					submitLabel="Update"
 					showReset={false}
-					on:change={showChange}
-					on:submit={doSubmit}
+					onchange={showChange}
+					onsubmit={doSubmit}
 				/>
 			</Tab>
 		{/if}

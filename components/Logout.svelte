@@ -21,4 +21,4 @@
 	};
 </script>
 
-<Button {variant} {mode} on:click={() => doLogout()}>{$_('Logout')}</Button>
+<Button {variant} {mode} onclick={() => doLogout()}>{$_('Logout')}</Button>

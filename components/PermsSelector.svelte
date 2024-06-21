@@ -64,7 +64,7 @@
 								><Input
 									type="checkbox"
 									name={perm_name}
-									checked={has_perm({ perms } as UserAuth,  perm_name)}
+									checked={has_perm({ perms } as UserAuth, perm_name)}
 									value="on"
 								/></td
 							>
@@ -77,7 +77,7 @@
 		</table>
 	</form>
 	<div class="footer">
-		<Button mode="success" on:click={setPerms}>Update User</Button>
+		<Button mode="success" onclick={setPerms}>Update User</Button>
 	</div>
 {/if}
 

@@ -132,7 +132,7 @@
 
 <div class="container">
 	{#if isReady}
-		<FormCreator {fields} values={targetUser} on:submit={(e) => onSubmit(e.detail)} />
+		<FormCreator {fields} values={targetUser} onsubmit={onSubmit} />
 	{/if}
 </div>
 
