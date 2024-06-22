@@ -25,24 +25,36 @@
 	import UserAdminCreate from './UserAdminCreate.svelte';
 	import { goto } from '$app/navigation';
 	import { PencilSquare, Trash, ShieldCheck, FingerPrint, Identification } from 'svelte-hero-icons';
+	import { filterModes } from '$liwe3/utils/match_filter';
 
-	export let maxRowsPerPage = 15;
-	export let customActions: GridAction[] = [];
+	interface Props {
+		maxRowsPerPage?: number;
+		customActions?: GridAction[];
+	}
 
-	let users: any[] = [];
-	let filteredUsers: any[] = [];
-	let displayUsers: any[] = [];
+	let { maxRowsPerPage = 15, customActions = [] }: Props = $props();
 
-	let deleteModalOpen = false;
-	let editModalOpen = false;
-	let permsModalOpen = false;
-	let passwordModalOpen = false;
-	let currentRow: any = null;
-
-	let filters: Record<string, any> = {};
-	let totRows: number = 0;
-
+	let users: any[] = $state([]);
+	let filteredUsers: any[] = $state([]);
 	const actions: GridAction[] = [...customActions];
+	let page: number = $state(1);
+
+	let deleteModalOpen = $state(false);
+	let editModalOpen = $state(false);
+	let permsModalOpen = $state(false);
+	let passwordModalOpen = $state(false);
+	let currentRow: any = $state(null);
+
+	let filters: Record<string, any> = $state({});
+	let totRows: number = $state(0);
+
+	let displayUsers: any[] = $derived(
+		filteredUsers.slice((page - 1) * maxRowsPerPage, page * maxRowsPerPage)
+	);
+
+	$effect(() => {
+		console.log('=== PAGE: ', page);
+	});
 
 	if (has_perm(storeUser, 'user.create')) {
 		gridFields.map((field) => {
@@ -227,17 +239,16 @@
 		});
 	};
 
-	const onFilterChange = (filters: Record<string, any>) => {
-		console.log('onFilterChange', filters);
-
-		const u: any[] = [];
+	const onfilterchange = (filters: Record<string, any>) => {
+		const res: any[] = [];
 
 		users.forEach((user) => {
 			let add = true;
 
 			for (const field in filters) {
 				const filter = filters[field];
-				if (filter.mode == '==') {
+
+				if (filter.mode == filterModes.contains) {
 					if (filter) {
 						if (!user[field] || user[field].indexOf(filter.value) == -1) {
 							add = false;
@@ -246,21 +257,13 @@
 				}
 			}
 
-			if (add) u.push(user);
+			if (add) res.push(user);
 		});
 
-		filteredUsers = u;
-		totRows = u.length;
+		filteredUsers = res;
+		totRows = res.length;
+		page = 1;
 	};
-
-	$: {
-		filteredUsers = users || [];
-		displayUsers = users?.slice(0, maxRowsPerPage) ?? [];
-	}
-
-	$: {
-		displayUsers = filteredUsers.slice(0, maxRowsPerPage);
-	}
 
 	const refreshUsers = async () => {
 		const res = await user_admin_list();
@@ -268,7 +271,9 @@
 		if (res.error) return;
 
 		users = res;
+		filteredUsers = [...users];
 		totRows = users?.length ?? 0;
+		filters = {};
 	};
 
 	onMount(async () => {
@@ -303,15 +308,9 @@
 
 			if (res.error) return;
 		}}
-		onfilterchange={onFilterChange}
+		{onfilterchange}
 	/>
-	<Paginator
-		total={totRows}
-		rows={maxRowsPerPage}
-		onpagechange={(page, rows) => {
-			displayUsers = filteredUsers.slice((page - 1) * maxRowsPerPage, page * maxRowsPerPage);
-		}}
-	/>
+	<Paginator total={totRows} rows={maxRowsPerPage} onpagechange={(page_, rows) => (page = page_)} />
 </div>
 
 {#if deleteModalOpen}
@@ -328,11 +327,11 @@
 		<div class="delete-user">{currentRow?.email}</div>
 
 		<!--
-		<div slot="footer">
-			<Button mode="error" on:click={deleteUser}>Delete User</Button>
-			<Button mode="info" on:click={() => (deleteModalOpen = false)}>Cancel</Button>
-		</div>
-	-->
+        <div slot="footer">
+            <Button mode="error" on:click={deleteUser}>Delete User</Button>
+            <Button mode="info" on:click={() => (deleteModalOpen = false)}>Cancel</Button>
+        </div>
+    -->
 	</Modal>
 {/if}
 
