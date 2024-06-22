@@ -3,14 +3,13 @@
 	import Button from '$liwe3/components/Button.svelte';
 	import type { UserAuth } from '$liwe3/types/user_auth';
 	import { user_logout } from '$modules/user/actions';
-	import { userStoreClear } from '../store.svelte';
+	import { storeUser, userStoreClear } from '../store.svelte';
 
 	interface AvatarProps {
-		user?: UserAuth | null;
 		logoutURL?: string;
 	}
 
-	let { user, logoutURL = '/' }: AvatarProps = $props();
+	let { logoutURL = '/' }: AvatarProps = $props();
 
 	let showDropdown = $state(false);
 
@@ -21,15 +20,13 @@
 </script>
 
 <div class="avatar">
-	{#if user}
+	{#if storeUser?.uid}
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div class="avatar-container" onclick={toggleDropdown} onkeyup={toggleDropdown}>
-			{#if user}
-				{#if user.avatar}
-					<img src={user.avatar} alt={user.name} />
-				{:else}
-					<span>{user.name?.charAt(0)}</span>
-				{/if}
+			{#if storeUser.avatar}
+				<img src={storeUser.avatar} alt={storeUser.name} />
+			{:else}
+				<span>{storeUser.name?.charAt(0)}</span>
 			{/if}
 		</div>
 		{#if showDropdown}
