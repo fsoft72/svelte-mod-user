@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Button from '$liwe3/components/Button.svelte';
 	import Checkbox from '$liwe3/components/Checkbox.svelte';
-	import Input from '$liwe3/components/Input.svelte';
 	import { type UserAuth } from '$liwe3/types/user_auth';
 	import { has_perm, isTrue, keys } from '$liwe3/utils/utils';
 	import { system_admin_permissions_list } from '$modules/system/actions';
