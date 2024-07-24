@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Button from '$liwe3/components/Button.svelte';
+	import Checkbox from '$liwe3/components/Checkbox.svelte';
 	import Input from '$liwe3/components/Input.svelte';
 	import { type UserAuth } from '$liwe3/types/user_auth';
 	import { has_perm, isTrue, keys } from '$liwe3/utils/utils';
@@ -61,8 +62,7 @@
 					{#each Object.keys(permissions[mod]).sort() as perm_name}
 						<tr>
 							<td class="check"
-								><Input
-									type="checkbox"
+								><Checkbox
 									name={perm_name}
 									checked={has_perm({ perms } as UserAuth, perm_name)}
 									value="on"
