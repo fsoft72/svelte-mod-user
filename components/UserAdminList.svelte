@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button from '$liwe3/components/Button.svelte';
-	import DataGrid, { type GridAction } from '$liwe3/components/DataGrid.svelte';
+	import DataGrid, { type GridAction, type GridButton } from '$liwe3/components/DataGrid.svelte';
 	import Modal from '$liwe3/components/Modal.svelte';
 	import FormCreator from '$liwe3/components/FormCreator.svelte';
 	import {
@@ -11,7 +11,7 @@
 		user_admin_list,
 		user_admin_relogin,
 		user_domain_set,
-		user_perms_set
+		user_perms_set,
 	} from '$modules/user/actions';
 	import { addToast } from '$liwe3/stores/ToastStore.svelte';
 	import PermsSelector from '$modules/user/components/PermsSelector.svelte';
@@ -52,9 +52,7 @@
 		filteredUsers.slice((page - 1) * maxRowsPerPage, page * maxRowsPerPage)
 	);
 
-	$effect(() => {
-		console.log('=== PAGE: ', page);
-	});
+	const buttons: GridButton[] = [];
 
 	if (has_perm(storeUser, 'user.create')) {
 		gridFields.map((field) => {
@@ -69,7 +67,7 @@
 				type: 'checkbox',
 				editable: true,
 				sortable: false,
-				filterable: false
+				filterable: false,
 			});
 		}
 
@@ -83,9 +81,18 @@
 					currentRow = row;
 					editModalOpen = true;
 					console.log('Edit', row);
-				}
+				},
 			});
 		}
+
+		buttons.push({
+			id: 'create',
+			label: $_('Create user'),
+			action: () => {
+				currentRow = { id: '' };
+				editModalOpen = true;
+			},
+		});
 	}
 
 	if (has_perm(storeUser, 'user.perms')) {
@@ -98,7 +105,7 @@
 				action: (row: any) => {
 					currentRow = row;
 					permsModalOpen = true;
-				}
+				},
 			});
 		}
 	}
@@ -113,7 +120,7 @@
 				action: (row: any) => {
 					currentRow = row;
 					passwordModalOpen = true;
-				}
+				},
 			});
 		}
 	}
@@ -129,7 +136,7 @@
 				mode: 'mode4',
 				action: (row: any) => {
 					changeIdentity(row.id);
-				}
+				},
 			});
 		}
 	}
@@ -144,7 +151,7 @@
 				action: (row: any) => {
 					currentRow = row;
 					deleteModalOpen = true;
-				}
+				},
 			});
 		}
 	}
@@ -160,12 +167,12 @@
 			perms: res.perms,
 			email: res.email,
 			token: res.access_token,
-			username: res.username
+			username: res.username,
 		});
 
 		addToast({
 			type: 'success',
-			message: $_('Identity changed successfully')
+			message: $_('Identity changed successfully'),
 		});
 
 		goto('/');
@@ -182,11 +189,12 @@
 
 		addToast({
 			type: 'success',
-			message: $_('User deleted successfully')
+			message: $_('User deleted successfully'),
 		});
 	};
 
-	const onEditSubmit = async (data: any) => {
+	const onEditSubmit = async (data: Record<string, any>) => {
+		console.log('=== SUBMIT: ', data);
 		let res: any = null;
 		let msg = $_('User created successfully');
 
@@ -207,7 +215,13 @@
 			);
 		}
 
-		if (res.error) return;
+		if (res.error) {
+			addToast({
+				type: 'error',
+				message: res.error.message,
+			});
+			return;
+		}
 
 		if (data.domain) {
 			if (has_perm(storeUser, 'system.domain')) {
@@ -219,7 +233,7 @@
 
 		addToast({
 			type: 'success',
-			message: msg
+			message: msg,
 		});
 
 		await refreshUsers();
@@ -235,7 +249,7 @@
 
 		addToast({
 			type: 'success',
-			message: 'Permissions updated successfully'
+			message: 'Permissions updated successfully',
 		});
 	};
 
@@ -282,26 +296,11 @@
 </script>
 
 <div class="container">
-	<div class="buttons">
-		<p class="title">{$_('Users List')}</p>
-		{#if has_perm(storeUser, 'user.create')}
-			<Button
-				mode="mode2"
-				size="sm"
-				href="/user/create"
-				onclick={() => {
-					currentRow = { id: '' };
-					editModalOpen = true;
-				}}
-			>
-				{$_('Create user')}
-			</Button>
-		{/if}
-	</div>
 	<DataGrid
 		data={displayUsers}
 		fields={gridFields}
 		{actions}
+		{buttons}
 		onupdatefield={async (row, field_name) => {
 			console.log('updateField', row, field_name);
 			const res = await user_admin_fields(row.id, { [field_name]: row[field_name] });
@@ -345,7 +344,7 @@
 			editModalOpen = false;
 		}}
 	>
-		<UserAdminCreate targetUser={currentRow} onuser={(e) => onEditSubmit(e.detail)} />
+		<UserAdminCreate targetUser={currentRow} onuser={onEditSubmit} />
 	</Modal>
 {/if}
 
@@ -381,7 +380,7 @@
 					type: 'password',
 					required: true,
 					placeholder: $_('Password'),
-					size: 'md'
+					size: 'md',
 				},
 				{
 					name: 'password_confirm',
@@ -389,8 +388,8 @@
 					type: 'password',
 					required: true,
 					placeholder: $_('Confirm password'),
-					size: 'md'
-				}
+					size: 'md',
+				},
 			]}
 			onsubmit={async (data: Record<string, any>) => {
 				const { password, password_confirm } = data;
@@ -398,7 +397,7 @@
 				if (password != password_confirm) {
 					addToast({
 						type: 'error',
-						message: $_('Passwords do not match')
+						message: $_('Passwords do not match'),
 					});
 
 					return;
@@ -410,7 +409,7 @@
 
 				addToast({
 					type: 'success',
-					message: $_('Password changed successfully')
+					message: $_('Password changed successfully'),
 				});
 
 				passwordModalOpen = false;
@@ -428,14 +427,5 @@
 		font-weight: bold;
 		text-align: center;
 		padding: 10px;
-	}
-
-	.buttons {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 0.3rem 1rem;
-
-		gap: 1rem;
 	}
 </style>
