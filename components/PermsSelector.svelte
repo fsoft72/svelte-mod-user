@@ -21,16 +21,12 @@
 
 	let permissions: SystemPerms = $state({});
 	let form: HTMLFormElement | null = $state(null);
+	let userPerms: Record<string, boolean> = $state({});
 
 	const setPerms = () => {
-		const formData = new FormData(form!);
-		const values = Object.fromEntries(formData.entries());
 		const newPerms: string[] = [];
-
-		for (const [k, v] of Object.entries(values)) {
-			const [module, name] = k.split('.');
-
-			if (isTrue(v)) newPerms.push(`${module}.${name}`);
+		for (const [k, v] of Object.entries(userPerms)) {
+			if (v) newPerms.push(k);
 		}
 
 		onupdate(newPerms);
@@ -45,6 +41,16 @@
 		}
 
 		permissions = res;
+
+		keys<string>(permissions).map((mod) => {
+			keys<string>(permissions[mod]).map((perm_name) => {
+				if (has_perm({ perms } as UserAuth, perm_name)) {
+					userPerms[perm_name] = true;
+				} else {
+					userPerms[perm_name] = false;
+				}
+			});
+		});
 	});
 </script>
 
@@ -60,13 +66,9 @@
 					</tr>
 					{#each Object.keys(permissions[mod]).sort() as perm_name}
 						<tr>
-							<td class="check"
-								><Checkbox
-									name={perm_name}
-									checked={has_perm({ perms } as UserAuth, perm_name)}
-									value="on"
-								/></td
-							>
+							<td class="check">
+								<Checkbox name={perm_name} bind:checked={userPerms[perm_name]} value="on" />
+							</td>
 							<td class="perm-name">{perm_name}</td>
 							<td class="perm-descr">{permissions[mod][perm_name]}</td>
 						</tr>
