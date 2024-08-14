@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import Button from '$liwe3/components/Button.svelte';
-	import type { UserAuth } from '$liwe3/types/user_auth';
 	import { user_logout } from '$modules/user/actions';
 	import { storeUser, userStoreClear } from '../store.svelte';
 
@@ -97,6 +96,8 @@
 		border-radius: 4px;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 		padding: 8px;
+
+		z-index: 100000;
 	}
 
 	.avatar-dropdown ul {
