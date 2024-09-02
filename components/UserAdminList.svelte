@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Button from '$liwe3/components/Button.svelte';
-	import DataGrid, { type GridAction, type GridButton } from '$liwe3/components/DataGrid.svelte';
 	import Modal from '$liwe3/components/Modal.svelte';
 	import FormCreator from '$liwe3/components/FormCreator.svelte';
 	import {
@@ -11,7 +10,7 @@
 		user_admin_list,
 		user_admin_relogin,
 		user_domain_set,
-		user_perms_set,
+		user_perms_set
 	} from '$modules/user/actions';
 	import { addToast } from '$liwe3/stores/ToastStore.svelte';
 	import PermsSelector from '$modules/user/components/PermsSelector.svelte';
@@ -26,17 +25,23 @@
 	import { goto } from '$app/navigation';
 	import { PencilSquare, Trash, ShieldCheck, FingerPrint, Identification } from 'svelte-hero-icons';
 	import { filterModes } from '$liwe3/utils/match_filter';
+	import type {
+		DataGridAction,
+		DataGridButton,
+		DataGridRow
+	} from '$liwe3/components/DataGrid.svelte';
+	import DataGrid from '$liwe3/components/DataGrid.svelte';
 
 	interface Props {
 		maxRowsPerPage?: number;
-		customActions?: GridAction[];
+		customActions?: DataGridAction[];
 	}
 
 	let { maxRowsPerPage = 15, customActions = [] }: Props = $props();
 
 	let users: any[] = $state([]);
 	let filteredUsers: any[] = $state([]);
-	const actions: GridAction[] = [...customActions];
+	const actions: DataGridAction[] = [...customActions];
 	let page: number = $state(1);
 
 	let deleteModalOpen = $state(false);
@@ -52,7 +57,7 @@
 		filteredUsers.slice((page - 1) * maxRowsPerPage, page * maxRowsPerPage)
 	);
 
-	const buttons: GridButton[] = [];
+	const buttons: DataGridButton[] = [];
 
 	if (has_perm(storeUser, 'user.create')) {
 		gridFields.map((field) => {
@@ -67,7 +72,7 @@
 				type: 'checkbox',
 				editable: true,
 				sortable: false,
-				filterable: false,
+				filterable: false
 			});
 		}
 
@@ -77,21 +82,21 @@
 				label: 'Edit',
 				icon: PencilSquare,
 				mode: 'mode1',
-				action: (row: any) => {
+				onclick: (row: any) => {
 					currentRow = row;
 					editModalOpen = true;
 					console.log('Edit', row);
-				},
+				}
 			});
 		}
 
 		buttons.push({
-			id: 'create',
 			label: $_('Create user'),
-			action: () => {
+			mode: 'success',
+			onclick: () => {
 				currentRow = { id: '' };
 				editModalOpen = true;
-			},
+			}
 		});
 	}
 
@@ -102,10 +107,10 @@
 				label: 'Permissions',
 				icon: ShieldCheck,
 				mode: 'mode2',
-				action: (row: any) => {
+				onclick: (row: any) => {
 					currentRow = row;
 					permsModalOpen = true;
-				},
+				}
 			});
 		}
 	}
@@ -117,10 +122,10 @@
 				label: 'Password',
 				icon: FingerPrint,
 				mode: 'mode3',
-				action: (row: any) => {
+				onclick: (row: any) => {
 					currentRow = row;
 					passwordModalOpen = true;
-				},
+				}
 			});
 		}
 	}
@@ -134,9 +139,9 @@
 				label: 'Change identity',
 				icon: Identification,
 				mode: 'mode4',
-				action: (row: any) => {
+				onclick: (row: any) => {
 					changeIdentity(row.id);
-				},
+				}
 			});
 		}
 	}
@@ -148,10 +153,10 @@
 				label: 'Delete',
 				icon: Trash,
 				mode: 'error',
-				action: (row: any) => {
+				onclick: (row: any) => {
 					currentRow = row;
 					deleteModalOpen = true;
-				},
+				}
 			});
 		}
 	}
@@ -167,12 +172,12 @@
 			perms: res.perms,
 			email: res.email,
 			token: res.access_token,
-			username: res.username,
+			username: res.username
 		});
 
 		addToast({
 			type: 'success',
-			message: $_('Identity changed successfully'),
+			message: $_('Identity changed successfully')
 		});
 
 		goto('/');
@@ -189,7 +194,7 @@
 
 		addToast({
 			type: 'success',
-			message: $_('User deleted successfully'),
+			message: $_('User deleted successfully')
 		});
 	};
 
@@ -218,7 +223,7 @@
 		if (res.error) {
 			addToast({
 				type: 'error',
-				message: res.error.message,
+				message: res.error.message
 			});
 			return;
 		}
@@ -233,7 +238,7 @@
 
 		addToast({
 			type: 'success',
-			message: msg,
+			message: msg
 		});
 
 		await refreshUsers();
@@ -249,7 +254,7 @@
 
 		addToast({
 			type: 'success',
-			message: 'Permissions updated successfully',
+			message: 'Permissions updated successfully'
 		});
 	};
 
@@ -290,26 +295,35 @@
 		filters = {};
 	};
 
+	$inspect('FILTERS: ', filters);
+
 	onMount(async () => {
 		await refreshUsers();
 	});
 </script>
 
 <div class="container">
-	<DataGrid
-		data={displayUsers}
-		fields={gridFields}
-		{actions}
-		{buttons}
-		onupdatefield={async (row, field_name) => {
-			console.log('updateField', row, field_name);
-			const res = await user_admin_fields(row.id, { [field_name]: row[field_name] });
+	{#key displayUsers}
+		<DataGrid
+			bind:filters
+			data={displayUsers}
+			fields={gridFields}
+			{actions}
+			{buttons}
+			onupdatefield={async (row: DataGridRow, field_name: string) => {
+				console.log('updateField', row, field_name);
+				const res = await user_admin_fields(row.id, { [field_name]: row[field_name] });
 
-			if (res.error) return;
-		}}
-		{onfilterchange}
-	/>
-	<Paginator total={totRows} rows={maxRowsPerPage} onpagechange={(page_, rows) => (page = page_)} />
+				if (res.error) return;
+			}}
+			{onfilterchange}
+		/>
+		<Paginator
+			total={totRows}
+			rows={maxRowsPerPage}
+			onpagechange={(page_, rows) => (page = page_)}
+		/>
+	{/key}
 </div>
 
 {#if deleteModalOpen}
@@ -380,7 +394,7 @@
 					type: 'password',
 					required: true,
 					placeholder: $_('Password'),
-					size: 'md',
+					size: 'md'
 				},
 				{
 					name: 'password_confirm',
@@ -388,8 +402,8 @@
 					type: 'password',
 					required: true,
 					placeholder: $_('Confirm password'),
-					size: 'md',
-				},
+					size: 'md'
+				}
 			]}
 			onsubmit={async (data: Record<string, any>) => {
 				const { password, password_confirm } = data;
@@ -397,7 +411,7 @@
 				if (password != password_confirm) {
 					addToast({
 						type: 'error',
-						message: $_('Passwords do not match'),
+						message: $_('Passwords do not match')
 					});
 
 					return;
@@ -409,7 +423,7 @@
 
 				addToast({
 					type: 'success',
-					message: $_('Password changed successfully'),
+					message: $_('Password changed successfully')
 				});
 
 				passwordModalOpen = false;
