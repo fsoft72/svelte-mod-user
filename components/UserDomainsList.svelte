@@ -3,7 +3,10 @@
 	import type { User, UserDomain } from '../types';
 	import Spinner from '$liwe3/components/Spinner.svelte';
 	import { user_domain_invitation_accept, user_domains_list } from '../actions';
-	import DataGrid, { type GridDataRow, type GridField } from '$liwe3/components/DataGrid.svelte';
+	import DataGrid, {
+		type DataGridRow,
+		type DataGridField
+	} from '$liwe3/components/DataGrid.svelte';
 	import Button from '$liwe3/components/Button.svelte';
 	import Modal from '$liwe3/components/Modal.svelte';
 	import { _ } from '$liwe3/stores/LocalizationStore';
@@ -16,11 +19,11 @@
 	let { user }: UserDomainsListProps = $props();
 
 	let is_ready = $state(false);
-	let domains: GridDataRow[] = $state([]);
+	let domains: DataGridRow[] = $state([]);
 	let showDomainDialog = $state(false);
 	let inv = $state('');
 
-	const fields: GridField[] = [
+	const fields: DataGridField[] = [
 		{
 			name: 'id',
 			label: 'ID',
