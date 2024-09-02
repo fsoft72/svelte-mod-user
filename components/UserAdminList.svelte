@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Button from '$liwe3/components/Button.svelte';
 	import Modal from '$liwe3/components/Modal.svelte';
 	import FormCreator from '$liwe3/components/FormCreator.svelte';
 	import {
@@ -16,7 +15,6 @@
 	import PermsSelector from '$modules/user/components/PermsSelector.svelte';
 
 	import gridFields from './subs/user.fields';
-	import Paginator from '$liwe3/components/Paginator.svelte';
 	import { onMount } from 'svelte';
 	import { has_perm } from '$liwe3/utils/utils';
 	import { storeUser, userStoreUpdate } from '$modules/user/store.svelte';
@@ -24,7 +22,6 @@
 	import UserAdminCreate from './UserAdminCreate.svelte';
 	import { goto } from '$app/navigation';
 	import { PencilSquare, Trash, ShieldCheck, FingerPrint, Identification } from 'svelte-hero-icons';
-	import { filterModes } from '$liwe3/utils/match_filter';
 	import type {
 		DataGridAction,
 		DataGridButton,
@@ -33,16 +30,13 @@
 	import DataGrid from '$liwe3/components/DataGrid.svelte';
 
 	interface Props {
-		maxRowsPerPage?: number;
 		customActions?: DataGridAction[];
 	}
 
-	let { maxRowsPerPage = 15, customActions = [] }: Props = $props();
+	let { customActions = [] }: Props = $props();
 
 	let users: any[] = $state([]);
-	let filteredUsers: any[] = $state([]);
 	const actions: DataGridAction[] = [...customActions];
-	let page: number = $state(1);
 
 	let deleteModalOpen = $state(false);
 	let editModalOpen = $state(false);
@@ -51,11 +45,6 @@
 	let currentRow: any = $state(null);
 
 	let filters: Record<string, any> = $state({});
-	let totRows: number = $state(0);
-
-	let displayUsers: any[] = $derived(
-		filteredUsers.slice((page - 1) * maxRowsPerPage, page * maxRowsPerPage)
-	);
 
 	const buttons: DataGridButton[] = [];
 
@@ -258,55 +247,27 @@
 		});
 	};
 
-	const onfilterchange = (filters: Record<string, any>) => {
-		const res: any[] = [];
-
-		users.forEach((user) => {
-			let add = true;
-
-			for (const field in filters) {
-				const filter = filters[field];
-
-				if (filter.mode == filterModes.contains) {
-					if (filter) {
-						if (!user[field] || user[field].indexOf(filter.value) == -1) {
-							add = false;
-						}
-					}
-				}
-			}
-
-			if (add) res.push(user);
-		});
-
-		filteredUsers = res;
-		totRows = res.length;
-		page = 1;
-	};
-
 	const refreshUsers = async () => {
 		const res = await user_admin_list();
 
 		if (res.error) return;
 
 		users = res;
-		filteredUsers = [...users];
-		totRows = users?.length ?? 0;
 		filters = {};
 	};
 
-	$inspect('FILTERS: ', filters);
-
+	let isReady = $state(false);
 	onMount(async () => {
 		await refreshUsers();
+		isReady = true;
 	});
 </script>
 
 <div class="container">
-	{#key displayUsers}
+	{#if isReady}
 		<DataGrid
 			bind:filters
-			data={displayUsers}
+			data={users}
 			fields={gridFields}
 			{actions}
 			{buttons}
@@ -316,14 +277,8 @@
 
 				if (res.error) return;
 			}}
-			{onfilterchange}
 		/>
-		<Paginator
-			total={totRows}
-			rows={maxRowsPerPage}
-			onpagechange={(page_, rows) => (page = page_)}
-		/>
-	{/key}
+	{/if}
 </div>
 
 {#if deleteModalOpen}
