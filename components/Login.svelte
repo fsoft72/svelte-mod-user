@@ -5,16 +5,20 @@
 	import type { FormField } from '$liwe3/components/FormCreator.svelte';
 	import PinInput from '$liwe3/components/PINInput.svelte';
 	import { _ } from '$liwe3/stores/LocalizationStore';
-	import { addToast } from '$liwe3/stores/ToastStore';
+	import { addToast } from '$liwe3/stores/ToastStore.svelte';
 	import { user_login, user_login_2fa } from '$modules/user/actions';
 	import { UserCircle } from 'svelte-hero-icons';
-	import { initUser } from '../store';
+	import { userStoreUpdate } from '../store.svelte';
 
-	export let redirect = '';
-	export let submitLabel = $_('Login');
+	interface LoginProps {
+		redirect?: string;
+		submitLabel?: string;
+	}
 
-	let show2FA = false;
-	let code2FA = '';
+	let { redirect = '', submitLabel = $_('Login') }: LoginProps = $props();
+
+	let show2FA = $state(false);
+	let code2FA = $state('');
 	let nonce = '';
 	let id_user = '';
 
@@ -36,7 +40,8 @@
 
 	const _do_login = (res: any) => {
 		console.log('=== DO LOGIN: ', res);
-		initUser({
+
+		userStoreUpdate({
 			uid: res.id || res.id_user,
 			name: `${res.name} ${res.lastname}`,
 			perms: res.perms,
@@ -55,8 +60,8 @@
 		}
 	};
 
-	const login = async (e: CustomEvent) => {
-		const { username, password } = e.detail;
+	const login = async (values: Record<string, string>) => {
+		const { username, password } = values;
 		const res = await user_login(password, username, undefined, undefined, 'testme');
 
 		if (res.error) {
@@ -99,12 +104,12 @@
 
 <div class="login-form">
 	{#if !show2FA}
-		<FormCreator {fields} showReset={false} on:submit={login} {submitLabel} />
+		<FormCreator {fields} showReset={false} onsubmit={login} {submitLabel} />
 		<p>{$_('Forgot password?')}</p>
 	{:else}
 		{$_('Insert 2FA code here')}
 		<PinInput bind:value={code2FA} />
-		<Button on:click={login2FA}>{$_('Submit')}</Button>
+		<Button onclick={login2FA}>{$_('Submit')}</Button>
 	{/if}
 </div>
 

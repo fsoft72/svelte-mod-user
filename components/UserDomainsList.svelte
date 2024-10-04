@@ -3,20 +3,27 @@
 	import type { User, UserDomain } from '../types';
 	import Spinner from '$liwe3/components/Spinner.svelte';
 	import { user_domain_invitation_accept, user_domains_list } from '../actions';
-	import DataGrid, { type GridDataRow, type GridField } from '$liwe3/components/DataGrid.svelte';
+	import DataGrid, {
+		type DataGridRow,
+		type DataGridField
+	} from '$liwe3/components/DataGrid.svelte';
 	import Button from '$liwe3/components/Button.svelte';
 	import Modal from '$liwe3/components/Modal.svelte';
 	import { _ } from '$liwe3/stores/LocalizationStore';
-	import { addToast } from '$liwe3/stores/ToastStore';
+	import { addToast } from '$liwe3/stores/ToastStore.svelte';
 
-	export let user: User | null;
+	interface UserDomainsListProps {
+		user: User;
+	}
 
-	let is_ready = false;
-	let domains: GridDataRow[] = [];
-	let showDomainDialog = false;
-	let inv = '';
+	let { user }: UserDomainsListProps = $props();
 
-	const fields: GridField[] = [
+	let is_ready = $state(false);
+	let domains: DataGridRow[] = $state([]);
+	let showDomainDialog = $state(false);
+	let inv = $state('');
+
+	const fields: DataGridField[] = [
 		{
 			name: 'id',
 			label: 'ID',
@@ -73,7 +80,7 @@
 {#if user?.id && is_ready}
 	<div class="container">
 		<div class="buttons">
-			<Button size="sm" mode="mode2" on:click={() => (showDomainDialog = true)}>Add Domain</Button>
+			<Button size="sm" mode="mode2" onclick={() => (showDomainDialog = true)}>Add Domain</Button>
 		</div>
 		<DataGrid {fields} data={domains} />
 	</div>
@@ -84,19 +91,19 @@
 {#if showDomainDialog}
 	<Modal
 		title="Add Domain"
-		on:close={() => {
+		onclose={() => {
 			showDomainDialog = false;
 		}}
-		on:cancel={() => {
+		oncancel={() => {
 			showDomainDialog = false;
 		}}
 	>
 		<div class="inv">
 			{$_('Paste your domain invitation here:')}
 
-			<textarea class="textarea" placeholder="Textarea" rows="5" bind:value={inv} />
+			<textarea class="textarea" placeholder="Textarea" rows="5" bind:value={inv}></textarea>
 
-			<Button size="sm" mode="mode2" on:click={addDomain}>{$_('Add Domain')}</Button>
+			<Button size="sm" mode="mode2" onclick={addDomain}>{$_('Add Domain')}</Button>
 		</div>
 	</Modal>
 {/if}

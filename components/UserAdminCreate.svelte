@@ -5,20 +5,25 @@
 	import FormCreator from '$liwe3/components/FormCreator.svelte';
 	import { system_domains_list } from '$modules/system/actions';
 	import { has_perm } from '$liwe3/utils/utils';
-	import { user } from '../store';
+	import { storeUser } from '../store.svelte';
 
-	export let targetUser: any = null;
+	interface Props {
+		targetUser: any;
 
-	const dispatch = createEventDispatcher();
+		// events
+		onuser: (user: Record<string, any>) => void;
+	}
 
-	let isReady = false;
+	let { targetUser, onuser }: Props = $props();
+
+	let isReady = $state(false);
 
 	const fields: FormField[] = [
 		{
 			name: 'id',
 			label: 'ID',
 			type: 'hidden',
-			required: true
+			required: true,
 		},
 		{
 			name: 'username',
@@ -27,7 +32,7 @@
 			required: true,
 			placeholder: 'Username',
 			size: 'md',
-			col: 6
+			col: 6,
 		},
 		{
 			name: 'email',
@@ -36,7 +41,7 @@
 			required: true,
 			placeholder: 'Email',
 			size: 'md',
-			col: 6
+			col: 6,
 		},
 		{
 			name: 'name',
@@ -45,7 +50,7 @@
 			required: false,
 			placeholder: 'Name',
 			size: 'md',
-			col: 6
+			col: 6,
 		},
 		{
 			name: 'lastname',
@@ -54,7 +59,7 @@
 			required: false,
 			placeholder: 'Lastname',
 			size: 'md',
-			col: 6
+			col: 6,
 		},
 		{
 			name: 'password',
@@ -63,7 +68,7 @@
 			required: false,
 			placeholder: 'Password',
 			size: 'md',
-			col: 6
+			col: 6,
 		},
 		{
 			name: 'group',
@@ -72,14 +77,14 @@
 			required: false,
 			placeholder: 'group',
 			size: 'md',
-			col: 6
+			col: 6,
 		},
 		{
 			name: 'enabled',
 			label: 'Enabled',
 			type: 'checkbox',
 			required: false,
-			size: 'md'
+			size: 'md',
 		},
 		{
 			name: 'domain',
@@ -90,22 +95,17 @@
 			perms: ['system.domain'],
 			options: [
 				{ value: 'default', label: 'Default' },
-				{ value: 'admin', label: 'Admin' }
+				{ value: 'admin', label: 'Admin' },
 			],
 			size: 'md',
-			col: 6
-		}
+			col: 6,
+		},
 	];
-
-	const onSubmit = (data: any) => {
-		dispatch('user', data);
-	};
 
 	onMount(async () => {
 		const options: { value: string; label: string }[] = [];
 
-		// console.log('=== USER: ', $user);
-		if (has_perm($user, 'system.domain')) {
+		if (has_perm(storeUser, 'system.domain')) {
 			const domains = await system_domains_list();
 			console.log('=== DOMAINS: ', domains);
 
@@ -113,7 +113,7 @@
 			domains.forEach((domain: any) => {
 				options.push({
 					value: domain.code,
-					label: domain.name
+					label: domain.name,
 				});
 			});
 
@@ -127,7 +127,7 @@
 
 <div class="container">
 	{#if isReady}
-		<FormCreator {fields} values={targetUser} on:submit={(e) => onSubmit(e.detail)} />
+		<FormCreator {fields} values={targetUser} onsubmit={onuser} />
 	{/if}
 </div>
 

@@ -1,14 +1,16 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import Button from '$liwe3/components/Button.svelte';
-	import type { UserAuth } from '$liwe3/types/user_auth';
 	import { user_logout } from '$modules/user/actions';
-	import { clearUser } from '../store';
+	import { storeUser, userStoreClear } from '../store.svelte';
 
-	export let user: UserAuth | null = null;
-	export let logoutURL: string = '/';
+	interface AvatarProps {
+		logoutURL?: string;
+	}
 
-	let showDropdown = false;
+	let { logoutURL = '/' }: AvatarProps = $props();
+
+	let showDropdown = $state(false);
 
 	function toggleDropdown() {
 		showDropdown = !showDropdown;
@@ -17,15 +19,13 @@
 </script>
 
 <div class="avatar">
-	{#if user}
-		<!-- svelte-ignore a11y-no-static-element-interactions -->
-		<div class="avatar-container" on:click={toggleDropdown} on:keyup={toggleDropdown}>
-			{#if user}
-				{#if user.avatar}
-					<img src={user.avatar} alt={user.name} />
-				{:else}
-					<span>{user.name?.charAt(0)}</span>
-				{/if}
+	{#if storeUser?.uid}
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
+		<div class="avatar-container" onclick={toggleDropdown} onkeyup={toggleDropdown}>
+			{#if storeUser.avatar}
+				<img src={storeUser.avatar} alt={storeUser.name} />
+			{:else}
+				<span>{storeUser.name?.charAt(0)}</span>
 			{/if}
 		</div>
 		{#if showDropdown}
@@ -33,14 +33,14 @@
 				<ul>
 					<li><a href="/user/profile">Profile</a></li>
 					<li>
-						<!-- svelte-ignore a11y-missing-attribute -->
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<!-- svelte-ignore a11y-no-static-element-interactions -->
+						<!-- svelte-ignore a11y_click_events_have_key_events -->
+						<!-- svelte-ignore a11y_no_static_element_interactions -->
+						<!-- svelte-ignore a11y_missing_attribute -->
 						<a
-							on:click={() => {
+							onclick={() => {
 								showDropdown = false;
 								user_logout();
-								clearUser();
+								userStoreClear();
 								goto(logoutURL);
 							}}
 							>Logout
@@ -50,7 +50,7 @@
 			</div>
 		{/if}
 	{:else}
-		<Button size="sm" on:click={() => goto('/auth/login')}>Login</Button>
+		<Button size="sm" onclick={() => goto('/auth/login')}>Login</Button>
 	{/if}
 </div>
 
@@ -96,6 +96,8 @@
 		border-radius: 4px;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 		padding: 8px;
+
+		z-index: 100000;
 	}
 
 	.avatar-dropdown ul {

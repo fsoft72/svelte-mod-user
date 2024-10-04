@@ -1,34 +1,35 @@
 <script lang="ts">
 	import Button from '$liwe3/components/Button.svelte';
-	import Input from '$liwe3/components/Input.svelte';
-	import { has_perm, isTrue } from '$liwe3/utils/utils';
+	import Checkbox from '$liwe3/components/Checkbox.svelte';
+	import { type UserAuth } from '$liwe3/types/user_auth';
+	import { has_perm, isTrue, keys } from '$liwe3/utils/utils';
 	import { system_admin_permissions_list } from '$modules/system/actions';
 	import { onMount } from 'svelte';
-	import { createEventDispatcher } from 'svelte';
-
-	const dispatch = createEventDispatcher();
 
 	interface SystemPerms {
 		[key: string]: Record<string, string>;
 	}
 
-	export let perms: string[] = [];
+	interface PermsSelectorProps {
+		perms: string[];
 
-	let permissions: SystemPerms = {};
-	let form: HTMLFormElement;
+		// events
+		onupdate: (perms: string[]) => void;
+	}
+
+	let { perms = [], onupdate }: PermsSelectorProps = $props();
+
+	let permissions: SystemPerms = $state({});
+	let form: HTMLFormElement | null = $state(null);
+	let userPerms: Record<string, boolean> = $state({});
 
 	const setPerms = () => {
-		const formData = new FormData(form);
-		const values = Object.fromEntries(formData.entries());
 		const newPerms: string[] = [];
-
-		for (const [k, v] of Object.entries(values)) {
-			const [module, name] = k.split('.');
-
-			if (isTrue(v)) newPerms.push(`${module}.${name}`);
+		for (const [k, v] of Object.entries(userPerms)) {
+			if (v) newPerms.push(k);
 		}
 
-		dispatch('update', newPerms);
+		onupdate(newPerms);
 	};
 
 	onMount(async () => {
@@ -40,10 +41,20 @@
 		}
 
 		permissions = res;
+
+		keys<string>(permissions).map((mod) => {
+			keys<string>(permissions[mod]).map((perm_name) => {
+				if (has_perm({ perms } as UserAuth, perm_name)) {
+					userPerms[perm_name] = true;
+				} else {
+					userPerms[perm_name] = false;
+				}
+			});
+		});
 	});
 </script>
 
-{#if Object.keys(permissions || {}).length === 0}
+{#if keys(permissions || {}).length === 0}
 	<div>No permissions found</div>
 {:else}
 	<form bind:this={form}>
@@ -55,14 +66,9 @@
 					</tr>
 					{#each Object.keys(permissions[mod]).sort() as perm_name}
 						<tr>
-							<td class="check"
-								><Input
-									type="checkbox"
-									name={perm_name}
-									checked={has_perm({ perms }, perm_name)}
-									value="on"
-								/></td
-							>
+							<td class="check">
+								<Checkbox name={perm_name} bind:checked={userPerms[perm_name]} value="on" />
+							</td>
 							<td class="perm-name">{perm_name}</td>
 							<td class="perm-descr">{permissions[mod][perm_name]}</td>
 						</tr>
@@ -72,7 +78,7 @@
 		</table>
 	</form>
 	<div class="footer">
-		<Button mode="success" on:click={setPerms}>Update User</Button>
+		<Button mode="success" onclick={setPerms}>Update User</Button>
 	</div>
 {/if}
 

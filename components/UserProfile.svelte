@@ -12,13 +12,23 @@
 	import { onMount } from 'svelte';
 	import { user_me } from '../actions';
 
-	export let showAccount = true;
-	export let showPassword = true;
-	export let showBio = true;
-	export let showBilling = true;
-	export let showDomains = true;
+	interface UserProfileProps {
+		showAccount?: boolean;
+		showPassword?: boolean;
+		showBio?: boolean;
+		showBilling?: boolean;
+		showDomains?: boolean;
+	}
 
-	let userFull: User | null = {} as User;
+	let {
+		showAccount = true,
+		showPassword = true,
+		showBio = true,
+		showBilling = true,
+		showDomains = true
+	}: UserProfileProps = $props();
+
+	let userFull: User = $state({} as User);
 
 	const values = {
 		name: '',
@@ -89,8 +99,8 @@
 					{values}
 					submitLabel="Update"
 					showReset={false}
-					on:change={showChange}
-					on:submit={doSubmit}
+					onchange={showChange}
+					onsubmit={doSubmit}
 				/>
 			</Tab>
 		{/if}
@@ -101,8 +111,8 @@
 					{values}
 					submitLabel="Update"
 					showReset={false}
-					on:change={showChange}
-					on:submit={doSubmit}
+					onchange={showChange}
+					onsubmit={doSubmit}
 				/>
 			</Tab>
 		{/if}
@@ -113,8 +123,8 @@
 					{values}
 					submitLabel="Update"
 					showReset={false}
-					on:change={showChange}
-					on:submit={doSubmit}
+					onchange={showChange}
+					onsubmit={doSubmit}
 				/>
 			</Tab>
 		{/if}
@@ -125,14 +135,14 @@
 					{values}
 					submitLabel="Update"
 					showReset={false}
-					on:change={showChange}
-					on:submit={doSubmit}
+					onchange={showChange}
+					onsubmit={doSubmit}
 				/>
 			</Tab>
 		{/if}
 		{#if showDomains}
 			<Tab title="Domains" id="domains">
-				<UserDomainsList user={userFull} />
+				<UserDomainsList user={userFull!} />
 			</Tab>
 		{/if}
 	</Tabs>
