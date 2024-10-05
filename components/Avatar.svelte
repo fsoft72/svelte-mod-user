@@ -32,6 +32,7 @@
 			<div class="avatar-dropdown">
 				<ul>
 					<li><a href="/user/profile">Profile</a></li>
+					<li><a href="/user/theme">Theme</a></li>
 					<li>
 						<!-- svelte-ignore a11y_click_events_have_key_events -->
 						<!-- svelte-ignore a11y_no_static_element_interactions -->
