@@ -14,7 +14,6 @@
 
 	function toggleDropdown() {
 		showDropdown = !showDropdown;
-		console.log('toggleDropdown: ', showDropdown);
 	}
 </script>
 
@@ -66,6 +65,8 @@
 		align-items: center;
 
 		margin-right: 28px;
+
+		user-select: none;
 	}
 
 	.avatar-container {
