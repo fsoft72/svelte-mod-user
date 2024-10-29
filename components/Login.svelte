@@ -115,9 +115,9 @@
 
 <style>
 	.login-form {
-		width: 500px;
+		min-width: 300px;
 		max-width: 600px;
-		padding: 20px;
+		width: 100%;
 
 		/*border: 1px solid #ccc;
 		border-radius: 5px;
