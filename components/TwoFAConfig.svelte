@@ -5,10 +5,10 @@
 	import Button from '$liwe3/components/Button.svelte';
 	import { addToast } from '$liwe3/stores/ToastStore.svelte';
 
-	let url = '';
-	let error = '';
+	let url = $state('');
+	let error = $state('');
 
-	let value = '';
+	let value = $state('');
 
 	const sendValue = async () => {
 		const res = await user_2fa_verify(value);
