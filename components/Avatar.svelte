@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import Button from '$liwe3/components/Button.svelte';
+	import ThemeSwatchColors from '$modules/theme/components/ThemeSwatchColors.svelte';
 	import { user_logout } from '$modules/user/actions';
 	import { storeUser, userStoreClear } from '../store.svelte';
 
@@ -11,6 +12,7 @@
 	let { logoutURL = '/' }: AvatarProps = $props();
 
 	let showDropdown = $state(false);
+	let colorSwatch = $state(false);
 
 	function toggleDropdown() {
 		showDropdown = !showDropdown;
@@ -32,6 +34,7 @@
 				<ul>
 					<li><a href="/user/profile">Profile</a></li>
 					<li><a href="/user/theme">Theme</a></li>
+					<li><div onclick={() => (colorSwatch = !colorSwatch)}>Color Swatch</div></li>
 					<li>
 						<!-- svelte-ignore a11y_click_events_have_key_events -->
 						<!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -53,6 +56,10 @@
 		<Button size="sm" onclick={() => goto('/auth/login')}>Login</Button>
 	{/if}
 </div>
+
+{#if colorSwatch}
+	<ThemeSwatchColors />
+{/if}
 
 <style>
 	.avatar {
