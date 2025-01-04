@@ -34,7 +34,10 @@
 				<ul>
 					<li><a href="/user/profile">Profile</a></li>
 					<li><a href="/user/theme">Theme</a></li>
-					<li><div onclick={() => (colorSwatch = !colorSwatch)}>Color Swatch</div></li>
+					<li>
+						<!-- svelte-ignore a11y_invalid_attribute -->
+						<a href="#" onclick={() => (colorSwatch = !colorSwatch)}>Color Swatch</a>
+					</li>
 					<li>
 						<!-- svelte-ignore a11y_click_events_have_key_events -->
 						<!-- svelte-ignore a11y_no_static_element_interactions -->
