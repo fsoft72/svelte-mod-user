@@ -1,6 +1,7 @@
 import { browser } from '$app/environment';
 import type { UserAuth } from '$liwe3/types/user_auth';
 import { clearObject } from '$liwe3/utils/utils';
+import app from '$liwe3/stores/app';
 
 // create a writable store for the LiWEUser
 export const storeUser: UserAuth = $state(
@@ -19,10 +20,13 @@ export const storeUser: UserAuth = $state(
 export const userStoreUpdate = ( data: UserAuth | null ) => {
 	Object.assign( storeUser, data );
 
+	app.token = data?.token ?? '';
+
 	// save the user data to the localStorage
 	if ( data && browser ) {
 		// convert data to Base64
 		localStorage.setItem( 'user', JSON.stringify( storeUser ) );
+
 
 		// set a cookie with the data
 		const base64 = btoa( JSON.stringify( storeUser ) );
