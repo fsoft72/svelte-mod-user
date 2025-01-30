@@ -57,27 +57,27 @@
 {#if keys(permissions || {}).length === 0}
 	<div>No permissions found</div>
 {:else}
-	<form bind:this={form}>
-		<table class="permission-block">
-			<tbody>
-				{#each Object.keys(permissions || {}) as mod}
-					<tr>
-						<th colspan="3" class="title">{mod}</th>
-					</tr>
-					{#each Object.keys(permissions[mod]).sort() as perm_name}
+	<div class="perms-container">
+		<form bind:this={form}>
+			<table class="permission-block">
+				<tbody>
+					{#each Object.keys(permissions || {}) as mod}
 						<tr>
-							<td class="check">
-								<Checkbox name={perm_name} bind:checked={userPerms[perm_name]} value="on" />
-							</td>
-							<td class="perm-name">{perm_name}</td>
-							<td class="perm-descr">{permissions[mod][perm_name]}</td>
+							<th colspan="3" class="title">{mod}</th>
 						</tr>
+						{#each Object.keys(permissions[mod]).sort() as perm_name}
+							<tr>
+								<td class="check">
+									<Checkbox name={perm_name} bind:checked={userPerms[perm_name]} value="on" />
+								</td>
+								<td class="perm-name">{perm_name}</td>
+								<td class="perm-descr">{permissions[mod][perm_name]}</td>
+							</tr>
+						{/each}
 					{/each}
-				{/each}
-			</tbody>
-		</table>
-	</form>
-	<div class="footer">
+				</tbody>
+			</table>
+		</form>
 		<Button mode="success" onclick={setPerms}>Update User</Button>
 	</div>
 {/if}
@@ -111,9 +111,7 @@
 		vertical-align: center;
 	}
 
-	.footer {
-		border-top: 1px solid var(--liwe3-lighter-secondary-color);
-		padding-top: 1rem;
-		text-align: right;
+	.perms-container {
+		overflow-y: auto;
 	}
 </style>
