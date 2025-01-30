@@ -13,9 +13,11 @@
 	interface LoginProps {
 		redirect?: string;
 		submitLabel?: string;
+		onsuccess?: () => void;
+		onerror?: () => void;
 	}
 
-	let { redirect = '', submitLabel = $_('Login') }: LoginProps = $props();
+	let { redirect = '', submitLabel = $_('Login'), onsuccess, onerror }: LoginProps = $props();
 
 	let show2FA = $state(false);
 	let code2FA = $state('');
@@ -55,6 +57,8 @@
 			message: 'Login successfull'
 		});
 
+		onsuccess && onsuccess();
+
 		if (redirect) {
 			goto(redirect);
 		}
@@ -69,6 +73,8 @@
 				type: 'error',
 				message: res.error.message
 			});
+
+			onerror && onerror();
 
 			return;
 		}
@@ -94,6 +100,7 @@
 				message: $_('Invalid 2FA code')
 			});
 
+			onerror && onerror();
 			nonce = res.nonce;
 			return;
 		}
