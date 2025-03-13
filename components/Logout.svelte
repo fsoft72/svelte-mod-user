@@ -1,10 +1,11 @@
 <script lang="ts">
 	import Button from '$liwe3/components/Button.svelte';
-	import { _ } from '$liwe3/stores/LocalizationStore';
+	import LocalizationStore from '$liwe3/stores/LocalizationStore.svelte';
 	import type { Color, Variant } from '$liwe3/types/types';
 	import { user_logout } from '../actions';
 	import { userStoreClear } from '../store.svelte';
 
+	const _ = LocalizationStore._;
 	interface LogoutProps {
 		redir?: string;
 		mode?: Color;
@@ -21,4 +22,4 @@
 	};
 </script>
 
-<Button {variant} {mode} onclick={() => doLogout()}>{$_('Logout')}</Button>
+<Button {variant} {mode} onclick={() => doLogout()}>{ _('Logout')}</Button>

@@ -4,11 +4,13 @@
 	import FormCreator from '$liwe3/components/FormCreator.svelte';
 	import type { FormField } from '$liwe3/components/FormCreator.svelte';
 	import PinInput from '$liwe3/components/PINInput.svelte';
-	import { _ } from '$liwe3/stores/LocalizationStore';
+	import LocalizationStore from '$liwe3/stores/LocalizationStore.svelte';
 	import { addToast } from '$liwe3/stores/ToastStore.svelte';
 	import { user_login, user_login_2fa } from '$modules/user/actions';
 	import { UserCircle } from 'svelte-hero-icons';
 	import { userStoreUpdate } from '../store.svelte';
+
+	const _ = LocalizationStore._;
 
 	interface LoginProps {
 		redirect?: string;
@@ -17,7 +19,8 @@
 		onerror?: () => void;
 	}
 
-	let { redirect = '', submitLabel = $_('Login'), onsuccess, onerror }: LoginProps = $props();
+	let { redirect = '', submitLabel = _('Login'), onsuccess, onerror }: LoginProps = $props();
+
 
 	let show2FA = $state(false);
 	let code2FA = $state('');
@@ -97,7 +100,7 @@
 		if (res.nonce) {
 			addToast({
 				type: 'error',
-				message: $_('Invalid 2FA code')
+				message: _('Invalid 2FA code')
 			});
 
 			onerror && onerror();
@@ -112,11 +115,11 @@
 <div class="login-form">
 	{#if !show2FA}
 		<FormCreator {fields} showReset={false} onsubmit={login} {submitLabel} />
-		<p>{$_('Forgot password?')}</p>
+		<p>{ _('Forgot password?')}</p>
 	{:else}
-		{$_('Insert 2FA code here')}
+		{ _('Insert 2FA code here')}
 		<PinInput bind:value={code2FA} />
-		<Button onclick={login2FA}>{$_('Submit')}</Button>
+		<Button onclick={login2FA}>{ _('Submit')}</Button>
 	{/if}
 </div>
 
