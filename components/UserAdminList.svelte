@@ -1,4 +1,5 @@
 <script lang="ts">
+	import LocalizationStore from '$liwe3/stores/LocalizationStore.svelte';
 	import Modal from '$liwe3/components/Modal.svelte';
 	import FormCreator from '$liwe3/components/FormCreator.svelte';
 	import {
@@ -18,7 +19,6 @@
 	import { onMount } from 'svelte';
 	import { has_perm } from '$liwe3/utils/utils';
 	import { storeUser, userStoreUpdate } from '$modules/user/store.svelte';
-	import { _ } from '$liwe3/stores/LocalizationStore';
 	import UserAdminCreate from './UserAdminCreate.svelte';
 	import { goto } from '$app/navigation';
 	import { PencilSquare, Trash, ShieldCheck, FingerPrint, Identification } from 'svelte-hero-icons';
@@ -28,6 +28,8 @@
 		DataGridRow
 	} from '$liwe3/components/DataGrid.svelte';
 	import DataGrid from '$liwe3/components/DataGrid.svelte';
+
+	const _ = LocalizationStore._;
 
 	interface Props {
 		customActions?: DataGridAction[];
@@ -80,7 +82,7 @@
 		}
 
 		buttons.push({
-			label: $_('Create user'),
+			label: _('Create user'),
 			mode: 'success',
 			onclick: () => {
 				currentRow = { id: '' };
@@ -166,7 +168,7 @@
 
 		addToast({
 			type: 'success',
-			message: $_('Identity changed successfully')
+			message: _('Identity changed successfully')
 		});
 
 		goto('/');
@@ -183,18 +185,18 @@
 
 		addToast({
 			type: 'success',
-			message: $_('User deleted successfully')
+			message: _('User deleted successfully')
 		});
 	};
 
 	const onEditSubmit = async (data: Record<string, any>) => {
 		console.log('=== SUBMIT: ', data);
 		let res: any = null;
-		let msg = $_('User created successfully');
+		let msg = _('User created successfully');
 
 		if (data.id) {
 			res = await user_admin_fields(data.id, data);
-			msg = $_('User updated successfully');
+			msg = _('User updated successfully');
 		} else {
 			res = await user_admin_add(
 				data.email,
@@ -333,7 +335,7 @@
 
 {#if passwordModalOpen}
 	<Modal
-		title={$_('Change password')}
+		title={_('Change password')}
 		onclose={() => {
 			passwordModalOpen = false;
 		}}
@@ -345,18 +347,18 @@
 			fields={[
 				{
 					name: 'password',
-					label: $_('Password'),
+					label: _('Password'),
 					type: 'password',
 					required: true,
-					placeholder: $_('Password'),
+					placeholder: _('Password'),
 					size: 'md'
 				},
 				{
 					name: 'password_confirm',
-					label: $_('Confirm password'),
+					label: _('Confirm password'),
 					type: 'password',
 					required: true,
-					placeholder: $_('Confirm password'),
+					placeholder: _('Confirm password'),
 					size: 'md'
 				}
 			]}
@@ -366,7 +368,7 @@
 				if (password != password_confirm) {
 					addToast({
 						type: 'error',
-						message: $_('Passwords do not match')
+						message: _('Passwords do not match')
 					});
 
 					return;
@@ -378,7 +380,7 @@
 
 				addToast({
 					type: 'success',
-					message: $_('Password changed successfully')
+					message: _('Password changed successfully')
 				});
 
 				passwordModalOpen = false;
