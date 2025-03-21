@@ -9,8 +9,10 @@
 	} from '$liwe3/components/DataGrid.svelte';
 	import Button from '$liwe3/components/Button.svelte';
 	import Modal from '$liwe3/components/Modal.svelte';
-	import { _ } from '$liwe3/stores/LocalizationStore';
+	import LocalizationStore from '$liwe3/stores/LocalizationStore.svelte';
 	import { addToast } from '$liwe3/stores/ToastStore.svelte';
+
+	const _ = LocalizationStore._;
 
 	interface UserDomainsListProps {
 		user: User;
@@ -64,7 +66,7 @@
 
 		addToast({
 			type: 'success',
-			message: $_('Domain added successfully')
+			message: _('Domain added successfully')
 		});
 	};
 
@@ -99,11 +101,11 @@
 		}}
 	>
 		<div class="inv">
-			{$_('Paste your domain invitation here:')}
+			{_('Paste your domain invitation here:')}
 
 			<textarea class="textarea" placeholder="Textarea" rows="5" bind:value={inv}></textarea>
 
-			<Button size="sm" mode="mode2" onclick={addDomain}>{$_('Add Domain')}</Button>
+			<Button size="sm" mode="mode2" onclick={addDomain}>{_('Add Domain')}</Button>
 		</div>
 	</Modal>
 {/if}
