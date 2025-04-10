@@ -8,15 +8,17 @@
     import storeLocalization from '$liwe3/stores/LocalizationStore.svelte';
 
     import type { FormField } from '$liwe3/components/FormCreator.svelte';
+	import { addToast } from '$liwe3/stores/ToastStore.svelte';
 
     type PropsType = {
         uac?: string;
+        showMessages?: boolean;
 
         onsuccess?: () => void;
         onerror?: () => void;
     };
 
-    let { uac: _uac, onsuccess, onerror }: PropsType = $props();
+    let { uac: _uac, showMessages = false, onsuccess, onerror }: PropsType = $props();
 
     let setPassword: boolean = $state(false);
     let showForm: boolean = $state(true);
@@ -49,18 +51,28 @@
     const emailFields: FormField[] = [
         {
             name: 'email',
-            label: 'Email',
+            label: _('Type your email'),
             type: 'text',
             required: true
         }
     ];
 
-    const handleError = (error: string) => {
+    const handleError = (error: string, reset: boolean = false) => {
         uiMessage = {type: 'err', txt: _(error)};
-        setTimeout(() => {
-            setPassword = false;
-            uiMessage = {type: 'msg', txt: ''};
-        } , 3000);
+        if (!showMessages) {
+            addToast({
+                type: 'error',
+                message: _(error)
+            });
+        }
+
+        if( reset ) {
+            setTimeout(() => {
+                setPassword = false;
+                uiMessage = {type: 'msg', txt: ''};
+            } , 3000);
+        }
+
         onerror && onerror();
     };
 
@@ -70,12 +82,12 @@
         const email = emailForm;
 
         if ( !email ) {
-            uiMessage = {type: 'err', txt: _('Email is required')};
+            handleError( 'Email is required' );
             return;
         }
 
         if ( data.password !== data.password2 ) {
-            uiMessage = {type:'err', txt: _('Passwords do not match')};
+            handleError( 'Passwords do not match' );
             return;
         }
 
@@ -83,7 +95,7 @@
             const res = await user_password_reset( email, code, data.password );
 
             if (typeof res === 'object') {
-                handleError( res?.error.message ?? err );
+                handleError( res?.error.message ?? err, true );
                 return;
             }
             uiMessage = {type: 'msg', txt: _('Password reset successfully')};
@@ -99,7 +111,7 @@
         emailForm = data.email;
         try {
             const debugUac = await user_password_forgot(data.email, 'test');
-
+            console.log('=== DEBUG UAC: ', debugUac);
             if (typeof debugUac === 'object' && debugUac !== null) {
                 handleError( debugUac?.error.message ?? err );
                 return;
@@ -131,14 +143,16 @@
             <FormCreator
                 fields={emailFields}
                 onsubmit={handleCodeRequest}
-                submitLabel={_('Send Reset Link')}
+                submitLabel={_('Request code')}
                 showReset={false}
             />
         {/if}
     {/if}
-    <div class="ui-message" class:error={uiMessage.type === 'err'}>
-        {uiMessage.txt}
-    </div>
+    {#if showMessages}
+        <div class="ui-message" class:error={uiMessage.type === 'err'}>
+            {uiMessage.txt}
+        </div>
+    {/if}
 </div>
 <style>
     .user-password-reset {
@@ -148,9 +162,12 @@
         justify-content: center;
         gap: 1rem;
         width: 100%;
+        min-width: 300px;
+        max-width: 600px;
     }
 
     .ui-message {
+        margin-top: 1rem;
         color: var(--liwe3-color);
     }
 
