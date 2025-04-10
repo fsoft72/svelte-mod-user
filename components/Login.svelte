@@ -9,6 +9,7 @@
 	import { user_login, user_login_2fa } from '$modules/user/actions';
 	import { UserCircle } from 'svelte-hero-icons';
 	import { userStoreUpdate } from '../store.svelte';
+	import ForgotPassword from './ForgotPassword.svelte';
 
 	const _ = LocalizationStore._;
 
@@ -24,6 +25,7 @@
 
 	let show2FA = $state(false);
 	let code2FA = $state('');
+	let forgotPass = $state(false);
 	let nonce = '';
 	let id_user = '';
 
@@ -110,21 +112,47 @@
 
 		_do_login(res);
 	};
+
+	const forgotPassword = () => {
+		forgotPass = !forgotPass;
+	};
+
+	const forgotPasswordSuccess = () => {
+		forgotPass = false;
+		addToast({
+			type: 'success',
+			message: _('Password updated')
+		});
+	};
 </script>
 
 <div class="login-form">
-	{#if !show2FA}
-		<FormCreator {fields} showReset={false} onsubmit={login} {submitLabel} />
-		<p>{ _('Forgot password?')}</p>
+	{#if !forgotPass}
+		{#if !show2FA}
+			<FormCreator {fields} showReset={false} onsubmit={login} {submitLabel} />
+			<div class="extra-button">
+				<Button size="sm" mode="warning" onclick={forgotPassword}>{ _('Forgot password?')}</Button>
+			</div>
+		{:else}
+			{ _('Insert 2FA code here')}
+			<PinInput bind:value={code2FA} />
+			<Button onclick={login2FA}>{ _('Submit')}</Button>
+		{/if}
 	{:else}
-		{ _('Insert 2FA code here')}
-		<PinInput bind:value={code2FA} />
-		<Button onclick={login2FA}>{ _('Submit')}</Button>
+		<ForgotPassword onsuccess={forgotPasswordSuccess}/>
+		<div class="extra-button">
+			<Button mode="warning" size="sm" onclick={forgotPassword}>{ _('Back to login')}</Button>
+		</div>
 	{/if}
 </div>
 
 <style>
 	.login-form {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: center;
+		gap: 0.5rem;
 		min-width: 300px;
 		max-width: 600px;
 		width: 100%;
@@ -134,5 +162,10 @@
 
 		font-family: sans-serif;
 		*/
+	}
+
+	.extra-button {
+		height: fit-content;
+		/*margin-top: -2rem;*/
 	}
 </style>
