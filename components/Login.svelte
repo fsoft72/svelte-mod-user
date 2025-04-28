@@ -22,7 +22,6 @@
 
 	let { redirect = '', submitLabel = _('Login'), onsuccess, onerror }: LoginProps = $props();
 
-
 	let show2FA = $state(false);
 	let code2FA = $state('');
 	let forgotPass = $state(false);
@@ -131,17 +130,21 @@
 		{#if !show2FA}
 			<FormCreator {fields} showReset={false} onsubmit={login} {submitLabel} />
 			<div class="extra-button">
-				<Button size="sm" mode="warning" onclick={forgotPassword}>{ _('Forgot password?')}</Button>
+				<Button size="sm" mode="warning" variant="link" onclick={forgotPassword}
+					>{_('Forgot password?')}</Button
+				>
 			</div>
 		{:else}
-			{ _('Insert 2FA code here')}
+			{_('Insert 2FA code here')}
 			<PinInput bind:value={code2FA} />
-			<Button onclick={login2FA}>{ _('Submit')}</Button>
+			<Button onclick={login2FA}>{_('Submit')}</Button>
 		{/if}
 	{:else}
-		<ForgotPassword onsuccess={forgotPasswordSuccess}/>
+		<ForgotPassword onsuccess={forgotPasswordSuccess} />
 		<div class="extra-button">
-			<Button mode="warning" size="sm" onclick={forgotPassword}>{ _('Back to login')}</Button>
+			<Button variant="link" mode="warning" size="sm" onclick={forgotPassword}>
+				{_('Back to login')}
+			</Button>
 		</div>
 	{/if}
 </div>
