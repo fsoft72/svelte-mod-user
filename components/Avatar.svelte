@@ -7,9 +7,10 @@
 
 	interface AvatarProps {
 		logoutURL?: string;
+		onlogout?: () => void;
 	}
 
-	let { logoutURL = '/' }: AvatarProps = $props();
+	let { logoutURL = '/', onlogout }: AvatarProps = $props();
 
 	let showDropdown = $state(false);
 	let colorSwatch = $state(false);
@@ -47,6 +48,7 @@
 								showDropdown = false;
 								user_logout();
 								userStoreClear();
+								if (onlogout) onlogout();
 								goto(logoutURL);
 							}}
 							>Logout
