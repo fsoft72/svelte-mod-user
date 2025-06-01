@@ -10,9 +10,10 @@
 		redir?: string;
 		mode?: Color;
 		variant?: Variant;
+		label?: string;
 	}
 
-	let { redir = '/', mode = 'error', variant = 'solid' }: LogoutProps = $props();
+	let { redir = '/', mode = 'error', variant = 'solid', label = 'Logout' }: LogoutProps = $props();
 
 	const doLogout = async () => {
 		await user_logout();
@@ -22,4 +23,4 @@
 	};
 </script>
 
-<Button {variant} {mode} onclick={() => doLogout()}>{ _('Logout')}</Button>
+<Button {variant} {mode} onclick={() => doLogout()}>{ _(label)}</Button>
