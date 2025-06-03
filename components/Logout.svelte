@@ -11,9 +11,10 @@
 		mode?: Color;
 		variant?: Variant;
 		label?: string;
+		children?: any;
 	}
 
-	let { redir = '/', mode = 'error', variant = 'solid', label = 'Logout' }: LogoutProps = $props();
+	let { redir = '/', mode = 'error', variant = 'solid', label = 'Logout', children }: LogoutProps = $props();
 
 	const doLogout = async () => {
 		await user_logout();
@@ -23,4 +24,10 @@
 	};
 </script>
 
-<Button {variant} {mode} onclick={() => doLogout()}>{ _(label)}</Button>
+<Button {variant} {mode} onclick={() => doLogout()}>
+	{#if children}
+		{@render children()}
+	{:else}
+		{ _(label)}
+	{/if}
+</Button>
