@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 
 	import type { FormField } from '$liwe3/components/FormCreator.svelte';
 	import FormCreator from '$liwe3/components/FormCreator.svelte';
@@ -23,7 +23,7 @@
 			name: 'id',
 			label: 'ID',
 			type: 'hidden',
-			required: true,
+			required: false,
 		},
 		{
 			name: 'username',

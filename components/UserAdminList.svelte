@@ -10,7 +10,7 @@
 		user_admin_list,
 		user_admin_relogin,
 		user_domain_set,
-		user_perms_set
+		user_perms_set,
 	} from '$modules/user/actions';
 	import { addToast } from '$liwe3/stores/ToastStore.svelte';
 	import PermsSelector from '$modules/user/components/PermsSelector.svelte';
@@ -25,7 +25,7 @@
 	import type {
 		DataGridAction,
 		DataGridButton,
-		DataGridRow
+		DataGridRow,
 	} from '$liwe3/components/DataGrid.svelte';
 	import DataGrid from '$liwe3/components/DataGrid.svelte';
 
@@ -63,7 +63,7 @@
 				type: 'checkbox',
 				editable: true,
 				sortable: false,
-				filterable: false
+				filterable: false,
 			});
 		}
 
@@ -77,7 +77,7 @@
 					currentRow = row;
 					editModalOpen = true;
 					console.log('Edit', row);
-				}
+				},
 			});
 		}
 
@@ -87,7 +87,7 @@
 			onclick: () => {
 				currentRow = { id: '' };
 				editModalOpen = true;
-			}
+			},
 		});
 	}
 
@@ -101,7 +101,7 @@
 				onclick: (row: any) => {
 					currentRow = row;
 					permsModalOpen = true;
-				}
+				},
 			});
 		}
 	}
@@ -116,7 +116,7 @@
 				onclick: (row: any) => {
 					currentRow = row;
 					passwordModalOpen = true;
-				}
+				},
 			});
 		}
 	}
@@ -132,7 +132,7 @@
 				mode: 'mode4',
 				onclick: (row: any) => {
 					changeIdentity(row.id);
-				}
+				},
 			});
 		}
 	}
@@ -147,7 +147,7 @@
 				onclick: (row: any) => {
 					currentRow = row;
 					deleteModalOpen = true;
-				}
+				},
 			});
 		}
 	}
@@ -163,12 +163,12 @@
 			perms: res.perms,
 			email: res.email,
 			token: res.access_token,
-			username: res.username
+			username: res.username,
 		});
 
 		addToast({
 			type: 'success',
-			message: _('Identity changed successfully')
+			message: _('Identity changed successfully'),
 		});
 
 		goto('/');
@@ -185,12 +185,11 @@
 
 		addToast({
 			type: 'success',
-			message: _('User deleted successfully')
+			message: _('User deleted successfully'),
 		});
 	};
 
 	const onEditSubmit = async (data: Record<string, any>) => {
-		console.log('=== SUBMIT: ', data);
 		let res: any = null;
 		let msg = _('User created successfully');
 
@@ -214,7 +213,7 @@
 		if (res.error) {
 			addToast({
 				type: 'error',
-				message: res.error.message
+				message: res.error.message,
 			});
 			return;
 		}
@@ -229,10 +228,12 @@
 
 		addToast({
 			type: 'success',
-			message: msg
+			message: msg,
 		});
 
 		await refreshUsers();
+
+		editModalOpen = false;
 	};
 
 	const onPermsUpdated = async (data: any) => {
@@ -245,7 +246,7 @@
 
 		addToast({
 			type: 'success',
-			message: 'Permissions updated successfully'
+			message: 'Permissions updated successfully',
 		});
 	};
 
@@ -351,7 +352,7 @@
 					type: 'password',
 					required: true,
 					placeholder: _('Password'),
-					size: 'md'
+					size: 'md',
 				},
 				{
 					name: 'password_confirm',
@@ -359,8 +360,8 @@
 					type: 'password',
 					required: true,
 					placeholder: _('Confirm password'),
-					size: 'md'
-				}
+					size: 'md',
+				},
 			]}
 			onsubmit={async (data: Record<string, any>) => {
 				const { password, password_confirm } = data;
@@ -368,7 +369,7 @@
 				if (password != password_confirm) {
 					addToast({
 						type: 'error',
-						message: _('Passwords do not match')
+						message: _('Passwords do not match'),
 					});
 
 					return;
@@ -380,7 +381,7 @@
 
 				addToast({
 					type: 'success',
-					message: _('Password changed successfully')
+					message: _('Password changed successfully'),
 				});
 
 				passwordModalOpen = false;
