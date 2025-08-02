@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import Button from '$liwe3/components/Button.svelte';
-	import ThemeSwatchColors from '$modules/theme/components/ThemeSwatchColors.svelte';
+	// import ThemeSwatchColors from '$modules/theme/components/ThemeSwatchColors.svelte';
 	import { user_logout } from '$modules/user/actions';
 	import { storeUser, userStoreClear } from '../store.svelte';
 
@@ -61,10 +61,6 @@
 		<Button size="sm" onclick={() => goto('/auth/login')}>Login</Button>
 	{/if}
 </div>
-
-{#if colorSwatch}
-	<ThemeSwatchColors />
-{/if}
 
 <style>
 	.avatar {
