@@ -125,7 +125,7 @@
 	};
 </script>
 
-<div class="login-form">
+<div class="login-form form-container">
 	{#if !forgotPass}
 		{#if !show2FA}
 			<FormCreator {fields} showReset={false} onsubmit={login} {submitLabel} />
