@@ -125,7 +125,7 @@
 	};
 </script>
 
-<div class="login-form form-container">
+<div class="login-form">
 	{#if !forgotPass}
 		{#if !show2FA}
 			<FormCreator {fields} showReset={false} onsubmit={login} {submitLabel} />
@@ -159,6 +159,10 @@
 		min-width: 300px;
 		max-width: 600px;
 		width: 100%;
+		padding: 1rem;
+		border: 1px solid var(--liwe3-border-color, #ccc);
+		border-radius: var(--liwe3-border-radius, 5px);
+		background-color: var(--liwe3-background-color, #fff);
 
 		/*border: 1px solid #ccc;
 		border-radius: 5px;
