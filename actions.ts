@@ -35,7 +35,7 @@ export const user_init = async ( data: string = '', force = false ) => {
 };
 /*=== f2c_end __file ===*/
 
-import { get, patch, post, delete_ } from '$liwe3/utils/fetcher';
+import { get, patch, post, delete_, type LiWEFetcherOptions } from '$liwe3/utils/fetcher';
 
 /**
  * This endpoint creates a valid user in the system, bypassing registration and verification phases.
@@ -53,8 +53,8 @@ import { get, patch, post, delete_ } from '$liwe3/utils/fetcher';
  * @return user: User
  *
  */
-export const user_admin_add = async ( email: string, password: string, username: string, name?: string, lastname?: string, perms?: string[], enabled?: boolean, language?: string, group?: string ) => {
-	const res = await post( `/api/user/admin/add`, {
+export const user_admin_add = async ( email: string, password: string, username: string, name?: string, lastname?: string, perms?: string[], enabled?: boolean, language?: string, group?: string, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/admin/add`, { 
 		email,
 		enabled,
 		group,
@@ -64,15 +64,15 @@ export const user_admin_add = async ( email: string, password: string, username:
 		password,
 		perms,
 		username
-	}, true );
+	 }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_admin_add ===*/
 
 	/*=== f2c_end user_admin_add ===*/
 
-	return res.user;
+	return res.data;
 };
 
 /**
@@ -88,8 +88,8 @@ export const user_admin_add = async ( email: string, password: string, username:
  * @return user: User
  *
  */
-export const user_admin_update = async ( id: string, email?: string, password?: string, name?: string, lastname?: string, enabled?: boolean, level?: number, language?: string ) => {
-	const res = await patch( `/api/user/admin/update`, {
+export const user_admin_update = async ( id: string, email?: string, password?: string, name?: string, lastname?: string, enabled?: boolean, level?: number, language?: string, _options?: LiWEFetcherOptions ) => {
+	const res = await patch( `/api/user/admin/update`, { 
 		email,
 		enabled,
 		id,
@@ -98,15 +98,15 @@ export const user_admin_update = async ( id: string, email?: string, password?: 
 		level,
 		name,
 		password
-	}, true );
+	 }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_admin_update ===*/
 
 	/*=== f2c_end user_admin_update ===*/
 
-	return res.user;
+	return res.data;
 };
 
 /**
@@ -117,16 +117,16 @@ export const user_admin_update = async ( id: string, email?: string, password?: 
  * @return id_user: str
  *
  */
-export const user_admin_del = async ( id_user: string ) => {
-	const res = await delete_( `/api/user/admin/del`, { id_user }, true );
+export const user_admin_del = async ( id_user: string, _options?: LiWEFetcherOptions ) => {
+	const res = await delete_( `/api/user/admin/del`, { id_user }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_admin_del ===*/
 
 	/*=== f2c_end user_admin_del ===*/
 
-	return res.id_user;
+	return res.data;
 };
 
 /**
@@ -139,16 +139,16 @@ export const user_admin_del = async ( id_user: string ) => {
  * @return user: User
  *
  */
-export const user_admin_fields = async ( id: string, data: any ) => {
-	const res = await patch( `/api/user/admin/fields`, { id, data }, true );
+export const user_admin_fields = async ( id: string, data: any, _options?: LiWEFetcherOptions ) => {
+	const res = await patch( `/api/user/admin/fields`, { id, data }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_admin_fields ===*/
 
 	/*=== f2c_end user_admin_fields ===*/
 
-	return res.user;
+	return res.data;
 };
 
 /**
@@ -168,8 +168,8 @@ export const user_admin_fields = async ( id: string, data: any ) => {
  * @return uac: UserActivationCode
  *
  */
-export const user_register = async ( email: string, password: string, recaptcha: string, name?: string, lastname?: string, phone?: string, username?: string, group?: string ) => {
-	const res = await post( `/api/user/register`, {
+export const user_register = async ( email: string, password: string, recaptcha: string, name?: string, lastname?: string, phone?: string, username?: string, group?: string, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/register`, { 
 		email,
 		group,
 		lastname,
@@ -178,15 +178,15 @@ export const user_register = async ( email: string, password: string, recaptcha:
 		phone,
 		recaptcha,
 		username
-	}, false );
+	 }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_register ===*/
 
 	/*=== f2c_end user_register ===*/
 
-	return res.uac;
+	return res.data;
 };
 
 /**
@@ -206,8 +206,8 @@ export const user_register = async ( email: string, password: string, recaptcha:
  * @return user: User
  *
  */
-export const user_update = async ( email?: string, password?: string, name?: string, lastname?: string, username?: string, group?: string, phone?: string ) => {
-	const res = await patch( `/api/user/update`, {
+export const user_update = async ( email?: string, password?: string, name?: string, lastname?: string, username?: string, group?: string, phone?: string, _options?: LiWEFetcherOptions ) => {
+	const res = await patch( `/api/user/update`, { 
 		email,
 		group,
 		lastname,
@@ -215,15 +215,15 @@ export const user_update = async ( email?: string, password?: string, name?: str
 		password,
 		phone,
 		username
-	}, true );
+	 }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_update ===*/
 
 	/*=== f2c_end user_update ===*/
 
-	return res.user;
+	return res.data;
 };
 
 /**
@@ -235,37 +235,16 @@ export const user_update = async ( email?: string, password?: string, name?: str
  * @return user: User
  *
  */
-export const user_avatar = async ( avatar: File ) => {
-	const res = await post( `/api/user/avatar`, { avatar }, true );
+export const user_avatar = async ( avatar: File, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/avatar`, { avatar }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_avatar ===*/
 
 	/*=== f2c_end user_avatar ===*/
 
-	return res.user;
-};
-
-/**
- * Uploads a user face for face recognition.
- * Only the user can update him/her self.
- *
- * @param face - the user face photo [req]
- *
- * @return facerec: UserFaceRec
- *
- */
-export const user_facerec_add = async ( face: File ) => {
-	const res = await post( `/api/user/facerec/add`, { face }, true );
-
-	if ( res.error ) return res;
-
-	/*=== f2c_start user_facerec_add ===*/
-
-	/*=== f2c_end user_facerec_add ===*/
-
-	return res.facerec;
+	return res.data;
 };
 
 /**
@@ -279,16 +258,16 @@ export const user_facerec_add = async ( face: File ) => {
  * @return uac: str
  *
  */
-export const user_password_forgot = async ( email: string, recaptcha: string ) => {
-	const res = await post( `/api/user/password-forgot`, { email, recaptcha }, false );
+export const user_password_forgot = async ( email: string, recaptcha: string, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/password-forgot`, { email, recaptcha }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_password_forgot ===*/
 
 	/*=== f2c_end user_password_forgot ===*/
 
-	return res.uac;
+	return res.data;
 };
 
 /**
@@ -301,16 +280,16 @@ export const user_password_forgot = async ( email: string, recaptcha: string ) =
  * @return ok: boolean
  *
  */
-export const user_password_reset = async ( email: string, code: string, password: string ) => {
-	const res = await post( `/api/user/password-reset`, { email, code, password }, false );
+export const user_password_reset = async ( email: string, code: string, password: string, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/password-reset`, { email, code, password }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_password_reset ===*/
 
 	/*=== f2c_end user_password_reset ===*/
 
-	return res.ok;
+	return res.data;
 };
 
 /**
@@ -321,16 +300,16 @@ export const user_password_reset = async ( email: string, code: string, password
  * @return user: User
  *
  */
-export const user_register_activate = async ( code: string ) => {
-	const res = await get( `/api/user/register/activate/:code`, { code }, false );
+export const user_register_activate = async ( code: string, _options?: LiWEFetcherOptions ) => {
+	const res = await get( `/api/user/register/activate/:code`, { code }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_register_activate ===*/
 
 	/*=== f2c_end user_register_activate ===*/
 
-	return res.user;
+	return res.data;
 };
 
 /**
@@ -342,16 +321,16 @@ export const user_register_activate = async ( code: string ) => {
  * @return user: User
  *
  */
-export const user_tag = async ( id_user: string, tags: string[] ) => {
-	const res = await post( `/api/user/tag`, { id_user, tags }, true );
+export const user_tag = async ( id_user: string, tags: string[], _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/tag`, { id_user, tags }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_tag ===*/
 
 	/*=== f2c_end user_tag ===*/
 
-	return res.user;
+	return res.data;
 };
 
 /**
@@ -364,16 +343,16 @@ export const user_tag = async ( id_user: string, tags: string[] ) => {
  * @return __plain__: UserSessionData
  *
  */
-export const user_token = async ( username: string, password: string ) => {
-	const res = await post( `/api/user/token`, { username, password }, false );
+export const user_token = async ( username: string, password: string, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/token`, { username, password }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_token ===*/
 
 	/*=== f2c_end user_token ===*/
 
-	return res;
+	return res.data;
 };
 
 /**
@@ -391,24 +370,22 @@ export const user_token = async ( username: string, password: string ) => {
  * @return __plain__: UserSessionData
  *
  */
-export const user_login = async ( password: string, email?: string, username?: string, recaptcha?: string, challenge?: string ) => {
-	userStoreClear();
-
-	const res = await post( `/api/user/login`, {
+export const user_login = async ( password: string, email?: string, username?: string, recaptcha?: string, challenge?: string, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/login`, { 
 		challenge,
 		email,
 		password,
 		recaptcha,
 		username
-	}, false );
+	 }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_login ===*/
 
 	/*=== f2c_end user_login ===*/
 
-	return res;
+	return res.data;
 };
 
 /**
@@ -425,21 +402,21 @@ export const user_login = async ( password: string, email?: string, username?: s
  * @return __plain__: UserSessionData
  *
  */
-export const user_login_remote = async ( email: string, name: string, challenge: string, avatar?: string ) => {
-	const res = await post( `/api/user/login/remote`, {
+export const user_login_remote = async ( email: string, name: string, challenge: string, avatar?: string, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/login/remote`, { 
 		avatar,
 		challenge,
 		email,
 		name
-	}, false );
+	 }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_login_remote ===*/
 
 	/*=== f2c_end user_login_remote ===*/
 
-	return res;
+	return res.data;
 };
 
 /**
@@ -453,16 +430,16 @@ export const user_login_remote = async ( email: string, name: string, challenge:
  * @return users: User
  *
  */
-export const user_admin_list = async ( tag?: string ) => {
-	const res = await get( `/api/user/admin/list`, { tag }, true );
+export const user_admin_list = async ( tag?: string, _options?: LiWEFetcherOptions ) => {
+	const res = await get( `/api/user/admin/list`, { tag }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_admin_list ===*/
 
 	/*=== f2c_end user_admin_list ===*/
 
-	return res.users;
+	return res.data;
 };
 
 /**
@@ -472,16 +449,16 @@ export const user_admin_list = async ( tag?: string ) => {
  * @return ok: boolean
  *
  */
-export const user_logout = async () => {
-	const res = await get( `/api/user/logout`, {}, true );
+export const user_logout = async ( _options?: any ) => {
+	const res = await get( `/api/user/logout`, {}, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_logout ===*/
 
 	/*=== f2c_end user_logout ===*/
 
-	return res.ok;
+	return res.data;
 };
 
 /**
@@ -491,16 +468,16 @@ export const user_logout = async () => {
  * @return user: User
  *
  */
-export const user_me = async () => {
-	const res = await get( `/api/user/me`, {}, true );
+export const user_me = async ( _options?: any ) => {
+	const res = await get( `/api/user/me`, {}, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_me ===*/
 
 	/*=== f2c_end user_me ===*/
 
-	return res.user;
+	return res.data;
 };
 
 /**
@@ -514,16 +491,16 @@ export const user_me = async () => {
  * @return ok: boolean
  *
  */
-export const user_perms_set = async ( id_user: string, perms: UserPerms ) => {
-	const res = await post( `/api/user/perms_set`, { id_user, perms }, true );
+export const user_perms_set = async ( id_user: string, perms: UserPerms, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/perms_set`, { id_user, perms }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_perms_set ===*/
 
 	/*=== f2c_end user_perms_set ===*/
 
-	return res.ok;
+	return res.data;
 };
 
 /**
@@ -538,16 +515,16 @@ export const user_perms_set = async ( id_user: string, perms: UserPerms ) => {
  * @return ok: boolean
  *
  */
-export const user_info_add = async ( key: string, data: any ) => {
-	const res = await post( `/api/user/info_add`, { key, data }, true );
+export const user_info_add = async ( key: string, data: any, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/info_add`, { key, data }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_info_add ===*/
 
 	/*=== f2c_end user_info_add ===*/
 
-	return res.ok;
+	return res.data;
 };
 
 /**
@@ -558,16 +535,16 @@ export const user_info_add = async ( key: string, data: any ) => {
  * @return ok: boolean
  *
  */
-export const user_info_del = async ( key: string ) => {
-	const res = await delete_( `/api/user/info_del`, { key }, true );
+export const user_info_del = async ( key: string, _options?: LiWEFetcherOptions ) => {
+	const res = await delete_( `/api/user/info_del`, { key }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_info_del ===*/
 
 	/*=== f2c_end user_info_del ===*/
 
-	return res.ok;
+	return res.data;
 };
 
 /**
@@ -593,8 +570,8 @@ export const user_info_del = async ( key: string ) => {
  * @return user: User
  *
  */
-export const user_profile = async ( name?: string, lastname?: string, phone?: string, email?: string, addr_street?: string, addr_nr?: string, addr_zip?: string, addr_city?: string, addr_state?: string, addr_country?: string, facebook?: string, twitter?: string, linkedin?: string, instagram?: string, website?: string ) => {
-	const res = await patch( `/api/user/profile`, {
+export const user_profile = async ( name?: string, lastname?: string, phone?: string, email?: string, addr_street?: string, addr_nr?: string, addr_zip?: string, addr_city?: string, addr_state?: string, addr_country?: string, facebook?: string, twitter?: string, linkedin?: string, instagram?: string, website?: string, _options?: LiWEFetcherOptions ) => {
+	const res = await patch( `/api/user/profile`, { 
 		addr_city,
 		addr_country,
 		addr_nr,
@@ -610,15 +587,15 @@ export const user_profile = async ( name?: string, lastname?: string, phone?: st
 		phone,
 		twitter,
 		website
-	}, true );
+	 }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_profile ===*/
 
 	/*=== f2c_end user_profile ===*/
 
-	return res.user;
+	return res.data;
 };
 
 /**
@@ -628,16 +605,16 @@ export const user_profile = async ( name?: string, lastname?: string, phone?: st
  * @return user: User
  *
  */
-export const user_test_create = async () => {
-	const res = await get( `/api/user/test/create`, {}, true );
+export const user_test_create = async ( _options?: any ) => {
+	const res = await get( `/api/user/test/create`, {}, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_test_create ===*/
 
 	/*=== f2c_end user_test_create ===*/
 
-	return res.user;
+	return res.data;
 };
 
 /**
@@ -651,16 +628,16 @@ export const user_test_create = async () => {
  * @return ok: boolean
  *
  */
-export const user_change_password = async ( old_password: string, new_password: string, recaptcha: string ) => {
-	const res = await patch( `/api/user/change/password`, { old_password, new_password, recaptcha }, true );
+export const user_change_password = async ( old_password: string, new_password: string, recaptcha: string, _options?: LiWEFetcherOptions ) => {
+	const res = await patch( `/api/user/change/password`, { old_password, new_password, recaptcha }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_change_password ===*/
 
 	/*=== f2c_end user_change_password ===*/
 
-	return res.ok;
+	return res.data;
 };
 
 /**
@@ -673,16 +650,16 @@ export const user_change_password = async ( old_password: string, new_password: 
  * @return user: User
  *
  */
-export const user_set_bio = async ( tagline?: string, bio?: string ) => {
-	const res = await patch( `/api/user/set/bio`, { tagline, bio }, true );
+export const user_set_bio = async ( tagline?: string, bio?: string, _options?: LiWEFetcherOptions ) => {
+	const res = await patch( `/api/user/set/bio`, { tagline, bio }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_set_bio ===*/
 
 	/*=== f2c_end user_set_bio ===*/
 
-	return res.user;
+	return res.data;
 };
 
 /**
@@ -705,8 +682,8 @@ export const user_set_bio = async ( tagline?: string, bio?: string ) => {
  * @return user: User
  *
  */
-export const user_set_billing = async ( address?: string, nr?: string, name?: string, city?: string, zip?: string, state?: string, country?: string, company_name?: string, fiscal_code?: string, vat_number?: string, sdi?: string, pec?: string ) => {
-	const res = await patch( `/api/user/set/billing`, {
+export const user_set_billing = async ( address?: string, nr?: string, name?: string, city?: string, zip?: string, state?: string, country?: string, company_name?: string, fiscal_code?: string, vat_number?: string, sdi?: string, pec?: string, _options?: LiWEFetcherOptions ) => {
+	const res = await patch( `/api/user/set/billing`, { 
 		address,
 		city,
 		company_name,
@@ -719,15 +696,15 @@ export const user_set_billing = async ( address?: string, nr?: string, name?: st
 		state,
 		vat_number,
 		zip
-	}, true );
+	 }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_set_billing ===*/
 
 	/*=== f2c_end user_set_billing ===*/
 
-	return res.user;
+	return res.data;
 };
 
 /**
@@ -741,16 +718,16 @@ export const user_set_billing = async ( address?: string, nr?: string, name?: st
  * @return __plain__: UserSessionData
  *
  */
-export const user_login_metamask = async ( address: string, challenge: string ) => {
-	const res = await post( `/api/user/login/metamask`, { address, challenge }, false );
+export const user_login_metamask = async ( address: string, challenge: string, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/login/metamask`, { address, challenge }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_login_metamask ===*/
 
 	/*=== f2c_end user_login_metamask ===*/
 
-	return res;
+	return res.data;
 };
 
 /**
@@ -766,21 +743,21 @@ export const user_login_metamask = async ( address: string, challenge: string ) 
  * @return user: User
  *
  */
-export const user_admin_get = async ( id?: string, email?: string, name?: string, lastname?: string ) => {
-	const res = await get( `/api/user/admin/get`, {
+export const user_admin_get = async ( id?: string, email?: string, name?: string, lastname?: string, _options?: LiWEFetcherOptions ) => {
+	const res = await get( `/api/user/admin/get`, { 
 		email,
 		id,
 		lastname,
 		name
-	}, true );
+	 }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_admin_get ===*/
 
 	/*=== f2c_end user_admin_get ===*/
 
-	return res.user;
+	return res.data;
 };
 
 /**
@@ -790,16 +767,16 @@ export const user_admin_get = async ( id?: string, email?: string, name?: string
  * @return ok: boolean
  *
  */
-export const user_remove_me = async () => {
-	const res = await get( `/api/user/remove/me`, {}, true );
+export const user_remove_me = async ( _options?: any ) => {
+	const res = await get( `/api/user/remove/me`, {}, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_remove_me ===*/
 
 	/*=== f2c_end user_remove_me ===*/
 
-	return res.ok;
+	return res.data;
 };
 
 /**
@@ -810,16 +787,16 @@ export const user_remove_me = async () => {
  * @return ok: boolean
  *
  */
-export const user_perms_get = async ( id_user: string ) => {
-	const res = await get( `/api/user/perms/get`, { id_user }, true );
+export const user_perms_get = async ( id_user: string, _options?: LiWEFetcherOptions ) => {
+	const res = await get( `/api/user/perms/get`, { id_user }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_perms_get ===*/
 
 	/*=== f2c_end user_perms_get ===*/
 
-	return res.ok;
+	return res.data;
 };
 
 /**
@@ -832,16 +809,16 @@ export const user_perms_get = async ( id_user: string ) => {
  * @return faces: UserFaceRec
  *
  */
-export const user_faces_get = async ( id_user?: string ) => {
-	const res = await get( `/api/user/faces/get`, { id_user }, true );
+export const user_faces_get = async ( id_user?: string, _options?: LiWEFetcherOptions ) => {
+	const res = await get( `/api/user/faces/get`, { id_user }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_faces_get ===*/
 
 	/*=== f2c_end user_faces_get ===*/
 
-	return res.faces;
+	return res.data;
 };
 
 /**
@@ -851,33 +828,16 @@ export const user_faces_get = async ( id_user?: string ) => {
  * @return face: UserFaceRec
  *
  */
-export const user_upload2face = async ( id_upload: string, id_user?: string ) => {
-	const res = await post( `/api/user/upload2face`, { id_upload, id_user }, true );
+export const user_upload2face = async ( id_upload: string, id_user?: string, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/upload2face`, { id_upload, id_user }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_upload2face ===*/
 
 	/*=== f2c_end user_upload2face ===*/
 
-	return res.face;
-};
-
-/**
- *
- * @return ok: boolean
- *
- */
-export const user_faces_modules = async () => {
-	const res = await get( `/api/user/faces/modules`, {}, false );
-
-	if ( res.error ) return res;
-
-	/*=== f2c_start user_faces_modules ===*/
-
-	/*=== f2c_end user_faces_modules ===*/
-
-	return res.ok;
+	return res.data;
 };
 
 /**
@@ -891,16 +851,16 @@ export const user_faces_modules = async () => {
  * @return user: User
  *
  */
-export const user_anonymous = async ( ts: string, challenge: string ) => {
-	const res = await post( `/api/user/anonymous`, { ts, challenge }, false );
+export const user_anonymous = async ( ts: string, challenge: string, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/anonymous`, { ts, challenge }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_anonymous ===*/
 
 	/*=== f2c_end user_anonymous ===*/
 
-	return res.user;
+	return res.data;
 };
 
 /**
@@ -920,8 +880,8 @@ export const user_anonymous = async ( ts: string, challenge: string ) => {
  * @return uac: UserActivationCode
  *
  */
-export const user_register_app = async ( email: string, password: string, challenge: string, name?: string, lastname?: string, phone?: string, username?: string, group?: string ) => {
-	const res = await post( `/api/user/register/app`, {
+export const user_register_app = async ( email: string, password: string, challenge: string, name?: string, lastname?: string, phone?: string, username?: string, group?: string, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/register/app`, { 
 		challenge,
 		email,
 		group,
@@ -930,15 +890,15 @@ export const user_register_app = async ( email: string, password: string, challe
 		password,
 		phone,
 		username
-	}, false );
+	 }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_register_app ===*/
 
 	/*=== f2c_end user_register_app ===*/
 
-	return res.uac;
+	return res.data;
 };
 
 /**
@@ -954,16 +914,16 @@ export const user_register_app = async ( email: string, password: string, challe
  * @return user: UserDetails
  *
  */
-export const user_find = async ( search?: string ) => {
-	const res = await get( `/api/user/find`, { search }, true );
+export const user_find = async ( search?: string, _options?: LiWEFetcherOptions ) => {
+	const res = await get( `/api/user/find`, { search }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_find ===*/
 
 	/*=== f2c_end user_find ===*/
 
-	return res.user;
+	return res.data;
 };
 
 /**
@@ -978,16 +938,16 @@ export const user_find = async ( search?: string ) => {
  * @return uac: UserActivationCode
  *
  */
-export const user_password_forgot_app = async ( username: string, challenge: string ) => {
-	const res = await post( `/api/user/password-forgot/app`, { username, challenge }, false );
+export const user_password_forgot_app = async ( username: string, challenge: string, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/password-forgot/app`, { username, challenge }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_password_forgot_app ===*/
 
 	/*=== f2c_end user_password_forgot_app ===*/
 
-	return res.uac;
+	return res.data;
 };
 
 /**
@@ -1001,16 +961,16 @@ export const user_password_forgot_app = async ( username: string, challenge: str
  * @return ok: boolean
  *
  */
-export const user_del_app = async ( id_user: string, username: string, challenge: string ) => {
-	const res = await post( `/api/user/del/app`, { id_user, username, challenge }, true );
+export const user_del_app = async ( id_user: string, username: string, challenge: string, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/del/app`, { id_user, username, challenge }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_del_app ===*/
 
 	/*=== f2c_end user_del_app ===*/
 
-	return res.ok;
+	return res.data;
 };
 
 /**
@@ -1021,16 +981,16 @@ export const user_del_app = async ( id_user: string, username: string, challenge
  * @return url: str
  *
  */
-export const user_2fa_start = async () => {
-	const res = await get( `/api/user/2fa/start`, {}, true );
+export const user_2fa_start = async ( _options?: any ) => {
+	const res = await get( `/api/user/2fa/start`, {}, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_2fa_start ===*/
 
 	/*=== f2c_end user_2fa_start ===*/
 
-	return res.url;
+	return res.data;
 };
 
 /**
@@ -1043,16 +1003,16 @@ export const user_2fa_start = async () => {
  * @return __plain__: UserSessionData
  *
  */
-export const user_login_2fa = async ( id: string, code: string, nonce: string ) => {
-	const res = await post( `/api/user/login/2fa`, { id, code, nonce }, false );
+export const user_login_2fa = async ( id: string, code: string, nonce: string, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/login/2fa`, { id, code, nonce }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_login_2fa ===*/
 
 	/*=== f2c_end user_login_2fa ===*/
 
-	return res;
+	return res.data;
 };
 
 /**
@@ -1064,16 +1024,16 @@ export const user_login_2fa = async ( id: string, code: string, nonce: string ) 
  * @return ok: boolean
  *
  */
-export const user_2fa_verify = async ( code: string ) => {
-	const res = await post( `/api/user/2fa/verify`, { code }, true );
+export const user_2fa_verify = async ( code: string, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/2fa/verify`, { code }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_2fa_verify ===*/
 
 	/*=== f2c_end user_2fa_verify ===*/
 
-	return res.ok;
+	return res.data;
 };
 
 /**
@@ -1085,16 +1045,16 @@ export const user_2fa_verify = async ( code: string ) => {
  * @return ok: boolean
  *
  */
-export const user_admin_change_password = async ( id_user: string, password: string ) => {
-	const res = await post( `/api/user/admin/change/password`, { id_user, password }, true );
+export const user_admin_change_password = async ( id_user: string, password: string, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/admin/change/password`, { id_user, password }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_admin_change_password ===*/
 
 	/*=== f2c_end user_admin_change_password ===*/
 
-	return res.ok;
+	return res.data;
 };
 
 /**
@@ -1105,20 +1065,20 @@ export const user_admin_change_password = async ( id_user: string, password: str
  * @return __plain__: UserSessionData
  *
  */
-export const user_admin_relogin = async ( id_user: string ) => {
-	const res = await post( `/api/user/admin/relogin`, { id_user }, true );
+export const user_admin_relogin = async ( id_user: string, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/admin/relogin`, { id_user }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_admin_relogin ===*/
 
 	/*=== f2c_end user_admin_relogin ===*/
 
-	return res;
+	return res.data;
 };
 
 /**
- * This endpoint adds a user to a new domain using a special invitation link. The invitation link is unique for each user.
+ * This endpoint adds a user to a new domain using a special invitation link. The invitation link is unique for each user. 
  * The user must already have an account in the system.
  *
  * @param invitation - The invitation [req]
@@ -1126,16 +1086,16 @@ export const user_admin_relogin = async ( id_user: string ) => {
  * @return ok: boolean
  *
  */
-export const user_domain_invitation_accept = async ( invitation: string ) => {
-	const res = await get( `/api/user/domain/invitation/accept`, { invitation }, true );
+export const user_domain_invitation_accept = async ( invitation: string, _options?: LiWEFetcherOptions ) => {
+	const res = await get( `/api/user/domain/invitation/accept`, { invitation }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_domain_invitation_accept ===*/
 
 	/*=== f2c_end user_domain_invitation_accept ===*/
 
-	return res.ok;
+	return res.data;
 };
 
 /**
@@ -1143,16 +1103,16 @@ export const user_domain_invitation_accept = async ( invitation: string ) => {
  * @return domains: UserDomain
  *
  */
-export const user_domains_list = async () => {
-	const res = await get( `/api/user/domains/list`, {}, true );
+export const user_domains_list = async ( _options?: any ) => {
+	const res = await get( `/api/user/domains/list`, {}, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_domains_list ===*/
 
 	/*=== f2c_end user_domains_list ===*/
 
-	return res.domains;
+	return res.data;
 };
 
 /**
@@ -1166,16 +1126,16 @@ export const user_domains_list = async () => {
  * @return __plain__: UserSessionData
  *
  */
-export const user_login_refresh = async ( token: string ) => {
-	const res = await post( `/api/user/login/refresh`, { token }, false );
+export const user_login_refresh = async ( token: string, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/login/refresh`, { token }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_login_refresh ===*/
 
 	/*=== f2c_end user_login_refresh ===*/
 
-	return res;
+	return res.data;
 };
 
 /**
@@ -1187,14 +1147,14 @@ export const user_login_refresh = async ( token: string ) => {
  * @return user: User
  *
  */
-export const user_domain_set = async ( id: string, code: string ) => {
-	const res = await post( `/api/user/domain/set`, { id, code }, true );
+export const user_domain_set = async ( id: string, code: string, _options?: LiWEFetcherOptions ) => {
+	const res = await post( `/api/user/domain/set`, { id, code }, _options?.skipError ? _options.skipError : false );
 
-	if ( res.error ) return res;
+	if (res.error) return res;
 
 	/*=== f2c_start user_domain_set ===*/
 
 	/*=== f2c_end user_domain_set ===*/
 
-	return res.user;
+	return res.data;
 };

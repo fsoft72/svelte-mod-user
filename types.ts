@@ -44,11 +44,11 @@ export interface UserFaceRec {
 /** User */
 export interface User {
 	/** the main id field */
-	id: string;
+	id?: string;
 	/** The domain code */
-	domain: string;
+	domain?: string;
 	/** The user email */
-	email: string;
+	email?: string;
 	/**  */
 	username?: string;
 	/** User name */
@@ -80,7 +80,7 @@ export interface User {
 	/** The date when the user has been deleted */
 	deleted?: Date;
 	/** Addresses binded to the user */
-	addresses?: Address[];
+	addresses?: any[];
 	/** Facebook account */
 	facebook?: string;
 	/** Twitter account */
