@@ -33,6 +33,14 @@ const fields = [
 		filterable: true
 	},
 	{
+		name: 'domain',
+		label: 'Domain',
+		type: 'string',
+		editable: false,
+		sortable: true,
+		filterable: true
+	},
+	{
 		name: 'group',
 		label: 'Group',
 		type: 'string',
