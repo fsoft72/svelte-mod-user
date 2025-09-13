@@ -53,7 +53,8 @@
 			perms: res.perms,
 			email: res.email,
 			token: res.access_token,
-			username: res.username
+			username: res.username,
+			domain: res.domain
 		});
 
 		addToast({
