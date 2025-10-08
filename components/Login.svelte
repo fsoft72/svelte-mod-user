@@ -52,7 +52,7 @@
 			name: `${res.name} ${res.lastname}`,
 			perms: res.perms,
 			email: res.email,
-			token: res.access_token,
+			token: res.access_token || res.token, // res.token is cloudflare
 			username: res.username,
 			domain: res.domain
 		});
@@ -71,7 +71,7 @@
 
 	const login = async (values: Record<string, string>) => {
 		const { username, password } = values;
-		const res = await user_login(password, username, undefined, undefined, 'testme');
+		const res = await user_login(password, undefined, username, undefined, nonce);
 
 		if (res.error) {
 			addToast({
